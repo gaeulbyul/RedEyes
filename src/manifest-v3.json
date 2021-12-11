@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Red Eyes",
+  "description": "Mark potentially abusive, harmful users.",
+  "author": "Gaeulbyul <aeiou256@gmail.com>",
+  "version": "0.0.0.1",
+  "version_name": "0.0.0.1 [MV3]",
+  "homepage_url": "https://github.com/gaeulbyul/RedEyes",
+  "icons": {
+    "48": "icons/icon-48.png",
+    "64": "icons/icon-64.png",
+    "128": "icons/icon-128.png"
+  },
+
+  "permissions": ["storage", "unlimitedStorage"],
+
+  "host_permissions": ["*://*/*"],
+
+  "options_ui": {
+    "open_in_tab": true,
+    "page": "options-ui/options-ui.htm"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://twitter.com/*", "https://mobile.twitter.com/*"],
+      "css": ["content/redeyes-style.css"],
+      "js": ["vendor/browser-polyfill.min.js", "bundled/site_twitter.bun.js"]
+    }
+  ],
+
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "https://twitter.com/*",
+        "https://mobile.twitter.com/*"
+      ],
+      "resources": ["bundled/inject_twitter.bun.js"]
+    }
+  ]
+}

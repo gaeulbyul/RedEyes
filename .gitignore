@@ -1,0 +1,16 @@
+.DS_Store
+/node_modules/
+/lib/
+.bsb.lock
+.cache/
+.merlin
+.vs
+.vscode
+.idea
+
+/build*/
+/dist/
+
+bundled/
+*.bun.js
+*.bs.js

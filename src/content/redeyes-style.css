@@ -1,0 +1,21 @@
+body:not(.darkmode) {
+    --redeyes-var-transphobic: crimson;
+    --redeyes-var-trans-friendly: green;
+}
+
+body.darkmode {
+    --redeyes-var-transphobic: tomato;
+    --redeyes-var-trans-friendly: chartreuse;
+}
+
+[data-redeyes=transphobic],
+.redeyes-transphobic {
+    color: var(--redeyes-var-transphobic) !important;
+    font-family: 'comic sans ms', fantasy;
+}
+
+[data-redeyes=trans_friendly],
+.redeyes-trans-friendly {
+    color: var(--redeyes-var-trans-friendly) !important;
+}
+
