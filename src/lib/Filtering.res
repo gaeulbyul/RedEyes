@@ -18,7 +18,9 @@ let preparedBloomFilters = ref({
   open Promise
   open Js.Array2
   Storage.loadLocalStorage()->thenResolve(storage => {
-    storage.filters->map(initializeFilter)
+    storage.filters
+    ->filter(bf => bf.enabled)
+    ->map(initializeFilter)
   })
 })
 
