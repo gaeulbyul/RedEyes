@@ -3,8 +3,8 @@
   "name": "Red Eyes",
   "description": "Mark potentially abusive, harmful users.",
   "author": "Gaeulbyul <aeiou256@gmail.com>",
-  "version": "0.0.0.1",
-  "version_name": "0.0.0.1 [MV3]",
+  "version": "0.0.0.2",
+  "version_name": "0.0.0.2 [MV3]",
   "homepage_url": "https://github.com/gaeulbyul/RedEyes",
   "icons": {
     "48": "icons/icon-48.png",
