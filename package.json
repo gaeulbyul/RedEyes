@@ -15,18 +15,14 @@
     }
   },
   "dependencies": {
-    "@rescript/react": "^0.10.3",
-    "@ryyppy/rescript-promise": "^2.1.0",
     "react-tabs": "^3.2.3"
   },
   "devDependencies": {
     "fs-extra": "^10.0.0",
-    "gentype": "^4.3.0",
     "husky": "^7.0.4",
     "just-scripts": "^1.6.1",
     "mkdirp": "^1.0.4",
     "ncp": "^2.0.0",
-    "rescript": "^9.1",
     "rimraf": "^3.0.2",
     "web-ext-types": "^3.2.1",
     "webpack": "^5.64.4",

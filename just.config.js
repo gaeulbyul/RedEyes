@@ -18,29 +18,20 @@ option('mode', {
   default: 'production',
 })
 
-// TODO: format non-rescript files
-task('format', async () => {
-  await exec('rescript format -all')
-})
-
 task('pre-commit', async () => {
-  await exec('rescript format -all')
 })
 
 task('build', async () => {
   const mode = /^dev.+?/i.test(argv().mode) ? 'development' : 'production'
   logger.info(`Build mode: ${mode}`)
-  logger.info('Build phase #1: ReScript build')
-  await exec('rescript build')
-  logger.info('Build phase #2: Webpack bundle')
+  logger.info('Build phase #1: Webpack bundle')
   await exec(`webpack-cli --mode=${mode}`)
-  logger.info('Build phase #3: Copying to build/')
+  logger.info('Build phase #2: Copying to build/')
   {
     const copyOptions = {
       stopOnErr: true,
       filter(filename) {
         switch (true) {
-          case /\.res$/i.test(filename):
           case /\.bs\.js$/i.test(filename):
             return false
           default:
@@ -57,7 +48,6 @@ task('build', async () => {
 
 task('clean', async () => {
   await Promise.all([
-    exec('rescript clean -with-deps'),
     rmrf('build-mv2/'),
     rmrf('build-mv3/'),
   ])

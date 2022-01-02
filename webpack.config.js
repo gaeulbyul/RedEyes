@@ -7,7 +7,7 @@ const mv2 = {
   entry: {
     site_twitter: './src/content/site-twitter.js',
     inject_twitter: './src/content/inject-twitter.js',
-    options_ui: './src/options-ui/OptionsUI.bs.js',
+    options_ui: './src/options-ui/options-ui.js',
   },
   output: {
     path: `${__dirname}/build-mv2/bundled`,

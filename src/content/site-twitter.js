@@ -1,4 +1,4 @@
-import * as Filtering from '../lib/Filtering.bs.js'
+import * as Filtering from '../lib/filtering.js'
 
 const name2IdMap = new Map
 

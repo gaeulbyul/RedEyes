@@ -70,3 +70,7 @@ button {
     display: flex;
     align-items: flex-start;
 }
+
+.new-filter-actions .loading-indicator {
+    padding: .5em;
+}
