@@ -53,11 +53,11 @@ function onFilterChanged(filters, filterDatas) {
 }
 
 browser.storage.onChanged.addListener(function (changes) {
-  var filtersInChanges = ('filters' in changes && 'filterDatas' in changes)
+  const filtersInChanges = ('filters' in changes && 'filterDatas' in changes)
   if (!filtersInChanges) {
     return
   }
-  var filters = (changes.filters.newValue || [])
-  var filterDatas = (changes.filterDatas.newValue || {})
+  const filters = (changes.filters.newValue || [])
+  const filterDatas = (changes.filterDatas.newValue || {})
   return onFilterChanged(filters, filterDatas)
 })
