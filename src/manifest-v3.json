@@ -24,7 +24,7 @@
   "content_scripts": [
     {
       "matches": ["https://twitter.com/*", "https://mobile.twitter.com/*"],
-      "css": ["content/redeyes-style.css"],
+      "css": ["content/redeyes-style.css", "content/twitter.css"],
       "js": ["vendor/browser-polyfill.min.js", "bundled/site_twitter.bun.js"]
     }
   ],

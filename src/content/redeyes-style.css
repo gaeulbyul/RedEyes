@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 body:not(.darkmode) {
     --redeyes-var-transphobic: crimson;
     --redeyes-var-trans-friendly: green;
