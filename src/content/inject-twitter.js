@@ -1,6 +1,6 @@
 const name2Ids = {
   obj: Object.create(null),
-  ids: new Set,
+  ids: new Set(),
   insert(id, name) {
     const loweredName = name.toLowerCase()
     this.ids.add(id)
@@ -17,7 +17,6 @@ const name2Ids = {
     return this.obj
   },
 }
-
 
 function getReactEventHandlers(elem) {
   for (const key in elem) {
@@ -45,13 +44,12 @@ function initialize() {
         mapModified = true
       }
       if (mapModified) {
-        const customEvent = new CustomEvent('RedEyes<-UserIds',{
-          detail: name2Ids.toJSON()
+        const customEvent = new CustomEvent('RedEyes<-UserIds', {
+          detail: name2Ids.toJSON(),
         })
         document.body.dispatchEvent(customEvent)
       }
     })
-    
   } else {
     setTimeout(initialize, 500)
   }

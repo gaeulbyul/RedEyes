@@ -1,6 +1,6 @@
 import * as Filtering from '../lib/filtering.js'
 
-const name2IdMap = new Map
+const name2IdMap = new Map()
 
 function indicateElement(elem, identifier, results) {
   const matchedFilter = results[0]
