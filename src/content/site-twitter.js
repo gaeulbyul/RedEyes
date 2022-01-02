@@ -1,4 +1,5 @@
 import * as Filtering from '../lib/filtering.js'
+import { getAddedElementsFromMutations } from './common.js'
 
 const name2IdMap = new Map()
 
@@ -41,7 +42,7 @@ function extractUserNameFromPath(path) {
   return name
 }
 
-async function handleUserElem(elem) {
+async function handleUserLink(elem) {
   const userName = extractUserNameFromPath(elem.pathname || '')
   if (!validateUserName(userName)) {
     return
@@ -57,6 +58,18 @@ async function handleUserElem(elem) {
     // Filtering.identify(userIdIdentifier)
   }
   const identifier = `twitter.com/${userName}`
+  const results = await Filtering.identify(identifier)
+  if (results.length > 0) {
+    indicateElement(elem, identifier, results)
+  }
+}
+
+async function handleUserSpanElem(elem) {
+  const userName = elem.textContent.trim().toLowerCase()
+  if (!/^@[0-9A-Z_]{1,15}$/i.test(userName)) {
+    return
+  }
+  const identifier = `twitter.com/${userName.slice(1)}`
   const results = await Filtering.identify(identifier)
   if (results.length > 0) {
     indicateElement(elem, identifier, results)
@@ -113,28 +126,42 @@ function isDark(colorThemeTag) {
 function main() {
   const touched = new WeakSet()
   const userNameObserver = new MutationObserver(mutations => {
-    mutations.forEach(({ addedNodes }) => {
-      addedNodes.forEach(node => {
-        if (!(node instanceof HTMLElement)) {
-          return
-        }
-        if (touched.has(node)) {
-          return
-        }
-        touched.add(node)
+    Array.from(getAddedElementsFromMutations(mutations)).forEach(elem => {
+      if (touched.has(elem)) {
+        return
+      }
+      touched.add(elem)
+      {
         const links = []
         const selector = 'a[href^="/"]'
-        if (node.matches(selector)) {
-          links.push(node)
+        if (elem.matches(selector)) {
+          links.push(elem)
         }
-        Array.from(node.querySelectorAll(selector))
+        Array.from(elem.querySelectorAll(selector))
           .filter(n => !touched.has(n))
           .forEach(n => links.push(n))
         links.forEach(a => {
           touched.add(a)
-          handleUserElem(a)
+          handleUserLink(a)
         })
-      })
+      }
+      {
+        const nameElems = []
+        const selector = 'div[dir=ltr]>span'
+        if (elem.matches(selector)) {
+          nameElems.push(elem)
+        }
+        Array.from(elem.querySelectorAll(selector))
+          .filter(n => !touched.has(n))
+          .forEach(n => nameElems.push(n))
+        if (nameElems.length > 0) {
+          //debugger
+        }
+        nameElems.forEach(el => {
+          touched.add(el)
+          handleUserSpanElem(el)
+        })
+      }
     })
   })
   userNameObserver.observe(document.body, {
