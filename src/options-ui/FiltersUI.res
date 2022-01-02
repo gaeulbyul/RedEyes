@@ -61,10 +61,12 @@ module FiltersUI = {
       None
     }
     switch maybeFile {
-    | Some(file) =>
+    | Some(file) => {
+      let fileName: string = file["name"]
       file["arrayBuffer"](.)->Promise.thenResolve(ab => {
-        Some(Js.TypedArray2.Uint32Array.make(ab))
+        Some((fileName, Js.TypedArray2.Uint32Array.make(ab)))
       })
+      }
     | None => Promise.resolve(None)
     }
   }
@@ -132,7 +134,10 @@ module FiltersUI = {
       ->map(promisedMaybeData =>
         promisedMaybeData->thenResolve(maybeData => {
           switch maybeData {
-          | Some(data) => {
+          | Some((name, data)) => {
+              if draftFilter.name == "" {
+                dispatchToDraftFilter(SetName(name))
+              }
               let data = castToArray(data)
               dispatchToDraftFilter(SetData(data))
             }
