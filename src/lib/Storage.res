@@ -3,10 +3,14 @@
 
 @val external browser: 'browser = "browser"
 
-type redEyesStorage = {filters: array<SharedTypes.redEyesFilterWithData>}
+type redEyesStorage = {
+  filters: array<SharedTypes.redEyesFilter>,
+  filterDatas: Js.Dict.t<SharedTypes.redEyesFilterData>,
+}
 
 let defaultStorage: redEyesStorage = {
   filters: [],
+  filterDatas: Js.Dict.empty(),
 }
 
 let loadLocalStorage = (): Promise.t<redEyesStorage> => {
@@ -18,8 +22,15 @@ let loadLocalStorage = (): Promise.t<redEyesStorage> => {
   `)
 }
 
+let loadLocalStorageOnlyFilters = () => {
+  browser["storage"]["local"]["get"](.)["then"](.stored => {
+    %raw("stored => {stored.filters ??= []}")(. stored)
+    stored
+  })
+}
+
 let saveLocalStorage = (data: redEyesStorage): unit => {
-  browser["storage"]["local"]["set"](data)
+  browser["storage"]["local"]["set"](. data)
 }
 
 let removeFilterById = (filterId: string): Promise.t<unit> => {
@@ -28,20 +39,20 @@ let removeFilterById = (filterId: string): Promise.t<unit> => {
   loadLocalStorage()->thenResolve(storage => {
     let {filters} = storage
     let filters = filters->filter(f => f.id != filterId)
-    saveLocalStorage({...storage, filters: filters})
+    saveLocalStorage({...storage, filters})
   })
 }
 
 let toggleFilter = (filterId: string, enabled: bool): Promise.t<unit> => {
   open Promise
   open Js.Array2
-  loadLocalStorage()->thenResolve(storage => {
+  loadLocalStorageOnlyFilters()->thenResolve(storage => {
     let {filters} = storage
     let filterToToggle = filters->find(f => f.id == filterId)
-    switch (filterToToggle) {
-      | Some(f) => %raw("(f,e) => {f.enabled = e}")(f, enabled)
-      | None => ()
+    switch filterToToggle {
+    | Some(f) => %raw("(f,e) => {f.enabled = e}")(f, enabled)
+    | None => ()
     }
-    saveLocalStorage({...storage, filters: filters})
+    saveLocalStorage({...storage, filters})
   })
 }

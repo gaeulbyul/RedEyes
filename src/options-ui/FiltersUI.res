@@ -70,6 +70,13 @@ module FiltersUI = {
     | None => Promise.resolve(None)
     }
   }
+  type draftFilterState = {
+    id: string,
+    enabled: bool,
+    name: string,
+    group: SharedTypes.filterGroup,
+    data: array<int>,
+  }
 
   type draftFilterAction =
     | SetName(string)
@@ -77,14 +84,14 @@ module FiltersUI = {
     | SetData(array<int>)
     | ResetForm
 
-  let initialState: SharedTypes.redEyesFilterWithData = {
+  let initialState = {
     id: generateRandomId(),
     enabled: true,
     name: "",
     group: #transphobic,
     data: [],
   }
-  let draftFilterReducer = (state: SharedTypes.redEyesFilterWithData, action) => {
+  let draftFilterReducer = (state, action) => {
     switch action {
     | SetName(name) => {...state, name: name}
     | SetGroup(group) => {...state, group: group}
@@ -117,8 +124,7 @@ module FiltersUI = {
       open Promise
       Storage.loadLocalStorage()
       ->thenResolve(storage => {
-        let filters = Belt.Array.map(storage.filters, Utils.detachDataInFilter)
-        setBloomFilters(_ => filters)
+        setBloomFilters(_ => storage.filters)
       })
       ->ignore
       None
@@ -154,8 +160,16 @@ module FiltersUI = {
       setLoadingIndicator(_ => true)
       Storage.loadLocalStorage()
       ->thenResolve(storage => {
-        let filters = Js.Array2.concat(storage.filters, [draftFilter])
-        Storage.saveLocalStorage({filters: filters})
+        let newFilter: SharedTypes.redEyesFilter = {
+          id: draftFilter.id,
+          enabled: true,
+          name: draftFilter.name,
+          group: draftFilter.group,
+        }
+        let filters = Js.Array2.concat(storage.filters, [newFilter])
+        let filterDatas = storage.filterDatas
+        Js.Dict.set(filterDatas, draftFilter.id, draftFilter.data)
+        Storage.saveLocalStorage({filters, filterDatas})
         dispatchToDraftFilter(ResetForm)
       })
       ->finally(() => {

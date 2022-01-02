@@ -3,11 +3,6 @@ type filterGroup = [
   | #trans_friendly
 ]
 
-type redEyesMatchedFilter = {
-  name: string,
-  group: filterGroup,
-}
-
 type redEyesFilter = {
   id: string,
   enabled: bool,
@@ -15,12 +10,6 @@ type redEyesFilter = {
   group: filterGroup,
 }
 
-type redEyesFilterWithData = {
-  id: string,
-  enabled: bool,
-  name: string,
-  group: filterGroup,
-  data: array<int>,
-}
+type redEyesFilterData = array<int>
 
 type identifyResult = {identifier: string, matchedFilters: array<redEyesFilter>}
