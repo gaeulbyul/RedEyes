@@ -14,6 +14,10 @@
 
   "permissions": ["*://*/*", "storage", "unlimitedStorage"],
 
+  "background": {
+    "service_worker": "bundled/background.bun.js"
+  },
+
   "options_ui": {
     "open_in_tab": true,
     "page": "options-ui/options-ui.htm"
@@ -23,7 +27,7 @@
     {
       "matches": ["https://twitter.com/*", "https://mobile.twitter.com/*"],
       "css": ["content/redeyes-style.css", "content/twitter.css"],
-      "js": ["vendor/browser-polyfill.min.js", "bundled/site_twitter.bun.js"]
+      "js": ["bundled/site_twitter.bun.js"]
     }
   ],
 

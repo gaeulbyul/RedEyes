@@ -15,7 +15,7 @@
     }
   },
   "dependencies": {
-    "react-tabs": "^3.2.3"
+    "webextension-polyfill": "^0.8.0"
   },
   "devDependencies": {
     "fs-extra": "^10.0.0",

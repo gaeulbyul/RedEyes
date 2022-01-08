@@ -1,3 +1,4 @@
+import browser from 'webextension-polyfill'
 import * as RedEyesStorage from '../lib/storage.js'
 
 function updateListOfBloomFilters(bfilters) {

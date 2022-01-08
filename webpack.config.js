@@ -5,8 +5,9 @@ const mv2 = {
   // mode: 'development',
   devtool: 'inline-source-map',
   entry: {
-    site_twitter: './src/content/site-twitter.js',
+    background: './src/background/background.js',
     options_ui: './src/options-ui/options-ui.js',
+    site_twitter: './src/content/site-twitter.js',
   },
   output: {
     path: `${__dirname}/build-mv2/bundled`,

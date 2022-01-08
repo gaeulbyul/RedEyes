@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill'
+
 import * as BloomFilter from './bloom-filter.js'
 import * as RedEyesStorage from './storage.js'
 
