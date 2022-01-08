@@ -1,8 +1,6 @@
 import * as Filtering from '../lib/filtering.js'
 import { getAddedElementsFromMutations } from './common.js'
 
-const name2IdMap = new Map()
-
 function indicateElement(elem, identifier, results) {
   const matchedFilter = results[0]
   if (!matchedFilter) {
@@ -50,12 +48,6 @@ async function handleUserLink(elem) {
   // "xxx, yyy님도 이 계정을 팔로우함"에서 xxx, yyy에 잘못 색칠될 수 있음
   if (elem.pathname.includes('/followers_you_follow')) {
     return
-  }
-  if (name2IdMap.has(userName)) {
-    const userId = name2IdMap.get(userName)
-    const userIdIdentifier = `twitter.com?USERID=${userId}`
-    console.info('idid: "%s"', userIdIdentifier)
-    // Filtering.identify(userIdIdentifier)
   }
   const identifier = `twitter.com/${userName}`
   const results = await Filtering.identify(identifier)
@@ -178,30 +170,8 @@ function main() {
   })
   document.body.classList.toggle('darkmode', isDark(colorThemeTag))
   document.body.appendChild(document.createElement('script'))
-  // 현재 갖춰놓은 필터가 없으므로 일단 주석처리.
-  // injectScript('/bundled/inject_twitter.bun.js')
-  // listenUserIdGathererEvent()
+
 }
 
-function injectScript(path) {
-  const script = document.createElement('script')
-  script.src = browser.runtime.getURL(path)
-  script.onload = script.onerror = () => {
-    script.remove()
-  }
-  document.body.appendChild(script)
-}
-
-function listenUserIdGathererEvent() {
-  document.body.addEventListener('RedEyes<-UserIds', event => {
-    if (!(event instanceof CustomEvent)) {
-      throw new Error('unreachable')
-    }
-    const users = event.detail
-    Object.entries(users).forEach(([name, id]) => {
-      name2IdMap.set(name, id)
-    })
-  })
-}
 
 main()

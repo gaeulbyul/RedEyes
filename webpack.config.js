@@ -6,7 +6,6 @@ const mv2 = {
   devtool: 'inline-source-map',
   entry: {
     site_twitter: './src/content/site-twitter.js',
-    inject_twitter: './src/content/inject-twitter.js',
     options_ui: './src/options-ui/options-ui.js',
   },
   output: {

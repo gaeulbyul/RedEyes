@@ -27,7 +27,5 @@
     }
   ],
 
-  "web_accessible_resources": [
-    "bundled/inject_twitter.bun.js"
-  ]
+  "web_accessible_resources": []
 }
