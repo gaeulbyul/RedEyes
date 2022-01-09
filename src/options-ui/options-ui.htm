@@ -4,66 +4,9 @@
 <title>Red Eyes</title>
 <link rel="stylesheet" href="/options-ui/options-ui.css">
 </head><body>
-    <template id="filter-item-template">
-        <div class="filter-item">
-            <div class="toggle">
-              <input type="checkbox" class="toggle-checkbox" />
-            </div>
-            <div class="name"></div>
-            <div class="actions">
-              <input type="button" class="remove-button" value="Remove" />
-            </div>
-        </div>
-    </template>
     <div class="container">
-        <div id="app">
-            <section class="installed-bloom-filters">
-                <fieldset>
-                    <legend>Installed Bloom-filters:</legend>
-                    <div id="list-of-bloom-filters">
-                    </div>
-                </fieldset>
-            </section>
-            <section class="new-bloom-filter">
-                <fieldset>
-                    <legend>New Bloom-filter:</legend>
-                    <form id="new-bloom-filter-form">
-                        <label>
-                            File:
-                            <br>
-                            <input type="file" name="filter-data" required>
-                        </label>
-                        <br>
-                        <label>
-                            Name:
-                            <br>
-                            <input type="text" name="filter-name" required size="30">
-                        </label>
-                        <br />
-                        <label>
-                            Group:
-                            <br>
-                            <select name="filter-group" required>
-                                <option value="transphobic">
-                                    Transphobic
-                                </option>
-                                <option value="trans_friendly">
-                                    Trans-Friendly
-                                </option>
-                            </select>
-                        </label>
-                        <hr>
-                        <div class="new-filter-actions">
-                            <input type="submit" value="Add" />
-                            <input type="reset" value="Clear form" />
-                            <div id="adding-indicator" hidden>Adding...</div>
-                        </div>
-                    </form>
-                </fieldset>
-            </section>
+        <div id="root">            
         </div>
-        <footer id="footer">
-        </footer>
     </div>
 <script src="/bundled/options_ui.bun.js"></script>
 </body></html>
