@@ -64,7 +64,7 @@
               <tr>
                 <td>{item.identifier}</td>
                 <td>
-                  <select value={item.group} on:change|preventDefault={handleGroupChange(event, item)}>
+                  <select value={item.group} on:change|preventDefault={event => handleGroupChange(event, item)}>
                     <option value="transphobic">Transphobic</option>
                     <option value="trans_friendly">Trans-Friendly</option>
                     <option value="neutral">Neutral</option>
