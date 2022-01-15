@@ -79,8 +79,7 @@
       const newFilter = Object.assign(Object.create(null), draftFilter)
       newFilter.id = (Date.now() + Math.random()).toString(36)
       newFilter.enabled = true
-      installedBloomFilters = [...installedBloomFilters, newFilter]
-      RedEyesStorage.loadLocalStorage().then(async storage => {
+      const promise = RedEyesStorage.loadLocalStorage().then(async storage => {
         const { filters, filterDatas } = storage 
         filterDatas[newFilter.id] = await filterFile
           .arrayBuffer()
@@ -91,6 +90,9 @@
       })
       draftFilter = Object.assign(Object.create(null), initialDraftFilter)
       form.reset()
+      promise.then(() => {
+        installedBloomFilters = [...installedBloomFilters, newFilter]
+      })
     }
     showAddingIndicator = true
     doSubmit().finally(() => {
