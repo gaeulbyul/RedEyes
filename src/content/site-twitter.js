@@ -16,6 +16,9 @@ function indicateElement(elem, identifier, results) {
   } else if (matchedFilter.group == 'transphobic') {
     className = 'redeyes-transphobic'
     tooltip = 'this user is in the transphobic!'
+  } else if (matchedFilter.group == 'neutral') {
+    className = 'redeyes-neutral'
+    tooltip = 'this user is neither phobic nor friendly!'
   }
   tooltip += '\n' + JSON.stringify(matchedFilter, null, 2)
   elem.classList.add(className)
