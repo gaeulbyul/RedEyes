@@ -12,7 +12,7 @@
     "128": "icons/icon-128.png"
   },
 
-  "permissions": ["*://*/*", "storage", "unlimitedStorage"],
+  "permissions": ["*://*/*", "storage", "unlimitedStorage", "contextMenus"],
 
   "background": {
     "service_worker": "bundled/background.bun.js"

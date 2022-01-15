@@ -17,7 +17,7 @@ export async function loadLocalStorageOnlyFilters() {
   return storage
 }
 
-async function loadLocalStorageOnlyManuallyIdentified() {
+export async function loadLocalStorageOnlyManuallyIdentified() {
   const storage = await browser.storage.local.get('manuallyIdentified')
   storage.manuallyIdentified ??= []
   return storage
