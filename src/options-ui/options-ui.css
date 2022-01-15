@@ -1,76 +1,82 @@
 @charset "utf-8";
 
-*, *::before, *::after {
-    box-sizing: border-box;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
-    background-color: chocolate;
-    font-size: 16px;
+  background-color: chocolate;
+  font-size: 16px;
 }
 
 .container {
-    margin: auto;
-    max-width: 600px;
-    background-color: white;
-    padding: 5px 10px;
-    border: 1px solid black;
-    border-radius: 5px;
-    box-shadow: 10px 10px 0 #00000044;
+  margin: auto;
+  max-width: 600px;
+  background-color: white;
+  padding: 0;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 10px 10px 0 #00000044;
 }
 
 .list-of-filters {
-    max-height: 500px;
-    overflow-y: scroll;
+  max-height: 500px;
+  overflow-y: scroll;
 }
 
 .filter-item {
-    border: 1px solid grey;
-    border-radius: 10px;
-    margin: 5px 0;
-    padding: 5px;
-    display: flex;
-    align-items: baseline;
+  border: 1px solid grey;
+  border-radius: 10px;
+  margin: 5px 0;
+  padding: 5px;
+  display: flex;
+  align-items: baseline;
 }
 
 .filter-item .name {
-    flex-grow: 1;
-    padding: 0 0.5em;
+  flex-grow: 1;
+  padding: 0 0.5em;
 }
 
 hr {
-    border-top: 1px solid grey;
-    border-bottom: 0;
+  border-top: 1px solid grey;
+  border-bottom: 0;
 }
 
 fieldset {
-    margin: 5px 0;
-    border: 1px solid grey;
-    border-radius: 4px;
+  margin: 5px 0;
+  border: 1px solid grey;
+  border-radius: 4px;
 }
 
-input[type=text] {
-    padding: .5em;
+input[type='text'] {
+  padding: 0.5em;
 }
 
 select {
-    padding: .5em;
+  padding: 0.5em;
 }
 
-input[type=button],
-input[type=submit],
-input[type=reset],
+input[type='button'],
+input[type='submit'],
+input[type='reset'],
 button {
-    padding: .5em 1em;
-    margin: 5px;
-    cursor: pointer;
+  padding: 0.5em 1em;
+  margin: 5px;
+  cursor: pointer;
 }
 
 .new-filter-actions {
-    display: flex;
-    align-items: flex-start;
+  display: flex;
+  align-items: flex-start;
 }
 
 .new-filter-actions .loading-indicator {
-    padding: .5em;
+  padding: 0.5em;
+}
+
+footer {
+  margin: 0 10px 10px;
 }
