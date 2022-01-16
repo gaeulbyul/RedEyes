@@ -45,11 +45,8 @@ function refreshFilters(filters: RedEyesFilter[], filterDatas: RedEyesFilterData
   return result
 }
 
-function refreshManuallyIdentifiedEntries(manuallyIdentified: RedEyesManuallyIdentifiedEntry[]) {
-  const result = Object.create(null)
-  manuallyIdentified.forEach(entry => {
-    result[entry.identifier] = entry.group
-  })
+function refreshManuallyIdentifiedEntries(manuallyIdentified: RedEyesManuallyIdentifiedEntries) {
+  const result = Object.assign(Object.create(null), manuallyIdentified)
   return result
 }
 

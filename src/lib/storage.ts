@@ -3,7 +3,7 @@ import browser from 'webextension-polyfill'
 const defaultStorage: RedEyesStorage = {
   filters: [],
   filterDatas: {},
-  manuallyIdentified: [],
+  manuallyIdentified: {},
 }
 
 export async function loadLocalStorage(): Promise<RedEyesStorage> {

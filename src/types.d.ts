@@ -8,17 +8,15 @@ interface RedEyesFilter {
   enabled: boolean
 }
 
-interface RedEyesManuallyIdentifiedEntry {
-  identifier: string
-  group: string
-}
 
 type RedEyesFilterDatas = Record<string, number[]>
+
+type RedEyesManuallyIdentifiedEntries = Record<string, RedEyesFilterGroup>
 
 interface RedEyesStorage {
   filters: RedEyesFilter[]
   filterDatas: RedEyesFilterDatas
-  manuallyIdentified: RedEyesManuallyIdentifiedEntry[]
+  manuallyIdentified: RedEyesManuallyIdentifiedEntries
 }
 
 interface MatchedFilter {

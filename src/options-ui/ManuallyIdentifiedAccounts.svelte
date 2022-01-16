@@ -4,30 +4,32 @@
 
   import { onMount } from 'svelte'
 
-  let manuallyIdentified: RedEyesManuallyIdentifiedEntry[] = []
+  let manuallyIdentified: RedEyesManuallyIdentifiedEntries = {}
   // let initialLoading = true
+  
+  const validGroup: RedEyesFilterGroup[] = ['transphobic', 'trans_friendly', 'neutral']
 
-  function handleRemoveButtonClick(_event: MouseEvent, item: RedEyesManuallyIdentifiedEntry) {
-    const confirmed = window.confirm(`Are you sure to remove a identifier '${item.identifier}'?`)
+  function handleRemoveButtonClick(_event: MouseEvent, identifier: string) {
+    const confirmed = window.confirm(`Are you sure to remove a identifier '${identifier}'?`)
     if (!confirmed) {
       return
     }
     //nameElem.textContent += ' (Removing...)'
-    manuallyIdentified = manuallyIdentified.filter(mi => mi.identifier !== item.identifier)
+    delete manuallyIdentified[identifier]
+    manuallyIdentified = manuallyIdentified
     RedEyesStorage.saveLocalStorage({ manuallyIdentified })
   }
 
-  function handleGroupChange(event: Event, item: RedEyesManuallyIdentifiedEntry) {
+  function handleGroupChange(event: Event, identifier: string) {
     const { target } = event
     if (!(target instanceof HTMLSelectElement)) {
       throw new Error('unreachable')
     }
-    const newGroup = target.value
-    const miToChange = manuallyIdentified.find(mi => mi.identifier === item.identifier)
-    if (!miToChange) {
-      return
+    const newGroup = target.value as RedEyesFilterGroup
+    if (!validGroup.includes(newGroup)) {
+      throw new Error(`unknown group: "${newGroup}"`)
     }
-    miToChange.group = newGroup
+    manuallyIdentified[identifier] = newGroup
     manuallyIdentified = manuallyIdentified
     RedEyesStorage.saveLocalStorage({ manuallyIdentified })
   }
@@ -64,13 +66,13 @@
             </tr>
           </thead>
           <tbody>
-            {#each manuallyIdentified as item}
+            {#each Object.entries(manuallyIdentified) as [identifier, group]}
               <tr>
-                <td>{item.identifier}</td>
+                <td>{identifier}</td>
                 <td>
                   <select
-                    value={item.group}
-                    on:change|preventDefault={event => handleGroupChange(event, item)}
+                    value={group}
+                    on:change|preventDefault={event => handleGroupChange(event, identifier)}
                   >
                     <option value="transphobic">Transphobic</option>
                     <option value="trans_friendly">Trans-Friendly</option>
@@ -81,7 +83,7 @@
                   <input
                     type="button"
                     value="Remove"
-                    on:click|preventDefault={event => handleRemoveButtonClick(event, item)}
+                    on:click|preventDefault={event => handleRemoveButtonClick(event, identifier)}
                   />
                 </td>
               </tr>
