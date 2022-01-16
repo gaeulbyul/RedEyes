@@ -10,12 +10,6 @@ interface PreparedFilter {
   bloomFilter: BloomFilter.BloomFilter
 }
 
-interface MatchedFilter {
-  id: string
-  name: string
-  group: string
-}
-
 function initializeFilter(filter: RedEyesFilter, filterData: number[]): PreparedFilter {
   return {
     id: filter.id,

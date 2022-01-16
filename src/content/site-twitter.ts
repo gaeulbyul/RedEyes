@@ -1,13 +1,11 @@
 import * as Filtering from '../lib/filtering.js'
 import { getAddedElementsFromMutations } from './common.js'
 
-function indicateElement(elem, identifier, results) {
+function indicateElement(elem: HTMLElement, identifier: string, results: MatchedFilter[]) {
   const matchedFilter = results[0]
   if (!matchedFilter) {
     return
   }
-  matchedFilter.identifier = identifier
-  delete matchedFilter.id
   let className = ''
   let tooltip = ''
   if (matchedFilter.group == 'trans_friendly') {
@@ -20,7 +18,11 @@ function indicateElement(elem, identifier, results) {
     className = 'redeyes-neutral'
     tooltip = 'this user is neither phobic nor friendly!'
   }
-  tooltip += '\n' + JSON.stringify(matchedFilter, null, 2)
+  tooltip += '\n' + JSON.stringify({
+    identifier,
+    name: matchedFilter.name,
+    group: matchedFilter.group,
+  }, null, 2)
   elem.classList.add(className)
   elem.title = tooltip
   elem.setAttribute('data-redeyes', matchedFilter.group)
@@ -31,7 +33,7 @@ function indicateElement(elem, identifier, results) {
   })
 }
 
-function extractUserNameFromPath(path) {
+function extractUserNameFromPath(path: string) {
   const splitted = path.split('/').slice(1)
   if (splitted.length <= 0) {
     return null
@@ -43,9 +45,9 @@ function extractUserNameFromPath(path) {
   return name
 }
 
-async function handleUserLink(elem) {
+async function handleUserLink(elem: HTMLAnchorElement) {
   const userName = extractUserNameFromPath(elem.pathname || '')
-  if (!validateUserName(userName)) {
+  if (!(userName && validateUserName(userName))) {
     return
   }
   // "xxx, yyy님도 이 계정을 팔로우함"에서 xxx, yyy에 잘못 색칠될 수 있음
@@ -59,8 +61,8 @@ async function handleUserLink(elem) {
   }
 }
 
-async function handleUserSpanElem(elem) {
-  const userName = elem.textContent.trim().toLowerCase()
+async function handleUserSpanElem(elem: HTMLElement) {
+  const userName = (elem.textContent || '').trim().toLowerCase()
   if (!/^@[0-9A-Z_]{1,15}$/i.test(userName)) {
     return
   }
@@ -100,10 +102,7 @@ const invalidUserNames = Object.freeze([
   'welcome',
 ])
 
-function validateUserName(userName) {
-  if (typeof userName != 'string') {
-    return false
-  }
+function validateUserName(userName: string) {
   const userNamePattern = /^[0-9a-z_]{1,15}$/i
   if (!userNamePattern.test(userName)) {
     return false
@@ -114,7 +113,7 @@ function validateUserName(userName) {
   return true
 }
 
-function isDark(colorThemeTag) {
+function isDark(colorThemeTag: HTMLMetaElement) {
   return colorThemeTag.content.toUpperCase() !== '#FFFFFF'
 }
 
@@ -127,12 +126,12 @@ function main() {
       }
       touched.add(elem)
       {
-        const links = []
+        const links: HTMLAnchorElement[] = []
         const selector = 'a[href^="/"]'
-        if (elem.matches(selector)) {
+        if (elem instanceof HTMLAnchorElement && elem.matches(selector)) {
           links.push(elem)
         }
-        Array.from(elem.querySelectorAll(selector))
+        Array.from(elem.querySelectorAll<HTMLAnchorElement>(selector))
           .filter(n => !touched.has(n))
           .forEach(n => links.push(n))
         links.forEach(a => {
@@ -163,7 +162,7 @@ function main() {
     subtree: true,
     childList: true,
   })
-  const colorThemeTag = document.querySelector('meta[name=theme-color]')
+  const colorThemeTag = document.querySelector<HTMLMetaElement>('meta[name=theme-color]')!
   const darkModeObserver = new MutationObserver(() => {
     document.body.classList.toggle('darkmode', isDark(colorThemeTag))
   })

@@ -20,3 +20,10 @@ interface RedEyesStorage {
   filterDatas: RedEyesFilterDatas
   manuallyIdentified: RedEyesManuallyIdentifiedEntry[]
 }
+
+interface MatchedFilter {
+  id: string
+  name: string
+  group: string
+}
+
