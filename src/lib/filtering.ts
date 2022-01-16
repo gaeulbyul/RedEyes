@@ -1,9 +1,22 @@
 import browser from 'webextension-polyfill'
 
-import * as BloomFilter from './bloom-filter.js'
-import * as RedEyesStorage from './storage.js'
+import * as BloomFilter from './bloom-filter'
+import * as RedEyesStorage from './storage'
 
-function initializeFilter(filter, filterData) {
+interface PreparedFilter {
+  id: string
+  name: string
+  group: RedEyesFilterGroup
+  bloomFilter: BloomFilter.BloomFilter
+}
+
+interface MatchedFilter {
+  id: string
+  name: string
+  group: string
+}
+
+function initializeFilter(filter: RedEyesFilter, filterData: number[]): PreparedFilter {
   return {
     id: filter.id,
     name: filter.name,
@@ -22,8 +35,8 @@ let preparedManuallyIdentifiedEntries = redEyesLocalStorage.then(storage => {
   return refreshManuallyIdentifiedEntries(storage.manuallyIdentified)
 })
 
-function refreshFilters(filters, filterDatas) {
-  const result = []
+function refreshFilters(filters: RedEyesFilter[], filterDatas: RedEyesFilterDatas) {
+  const result: PreparedFilter[] = []
   filters.forEach(filter => {
     if (!filter.enabled) {
       return
@@ -38,7 +51,7 @@ function refreshFilters(filters, filterDatas) {
   return result
 }
 
-function refreshManuallyIdentifiedEntries(manuallyIdentified) {
+function refreshManuallyIdentifiedEntries(manuallyIdentified: RedEyesManuallyIdentifiedEntry[]) {
   const result = Object.create(null)
   manuallyIdentified.forEach(entry => {
     result[entry.identifier] = entry.group
@@ -46,7 +59,7 @@ function refreshManuallyIdentifiedEntries(manuallyIdentified) {
   return result
 }
 
-export async function identify(identifier) {
+export async function identify(identifier: string) {
   const miEntries = await preparedManuallyIdentifiedEntries
   if (identifier in miEntries) {
     const group = miEntries[identifier]
@@ -56,7 +69,7 @@ export async function identify(identifier) {
       group,
     }]
   }
-  const matched = []
+  const matched: MatchedFilter[] = []
   const bloomFilters = await preparedBloomFilters
   bloomFilters.forEach(mbf => {
     if (!mbf.bloomFilter.test(identifier)) {
@@ -71,7 +84,7 @@ export async function identify(identifier) {
   return matched
 }
 
-browser.storage.onChanged.addListener(function (changes) {
+browser.storage.onChanged.addListener(changes => {
   const filtersInChanges = ('filters' in changes || 'filterDatas' in changes)
   if (filtersInChanges) {
     const filters = (changes.filters.newValue || [])
