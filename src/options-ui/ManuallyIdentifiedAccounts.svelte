@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
   import browser from 'webextension-polyfill'
   import * as RedEyesStorage from '../lib/storage.js'
 
   import { onMount } from 'svelte'
 
-  let manuallyIdentified = []
-  let initialLoading = true
+  let manuallyIdentified: RedEyesManuallyIdentifiedEntry[] = []
+  // let initialLoading = true
 
-  function handleRemoveButtonClick(event, item) {
+  function handleRemoveButtonClick(_event: MouseEvent, item: RedEyesManuallyIdentifiedEntry) {
     const confirmed = window.confirm(`Are you sure to remove a identifier '${item.identifier}'?`)
     if (!confirmed) {
       return
@@ -17,8 +17,12 @@
     RedEyesStorage.saveLocalStorage({ manuallyIdentified })
   }
 
-  function handleGroupChange(event, item) {
-    const newGroup = event.target.value
+  function handleGroupChange(event: Event, item: RedEyesManuallyIdentifiedEntry) {
+    const { target } = event
+    if (!(target instanceof HTMLSelectElement)) {
+      throw new Error('unreachable')
+    }
+    const newGroup = target.value
     const miToChange = manuallyIdentified.find(mi => mi.identifier === item.identifier)
     if (!miToChange) {
       return
@@ -28,7 +32,7 @@
     RedEyesStorage.saveLocalStorage({ manuallyIdentified })
   }
 
-  function onStorageChanged(changes) {
+  function onStorageChanged(changes: any) {
     if ('manuallyIdentified' in changes) {
       manuallyIdentified = changes.manuallyIdentified.newValue
     }
@@ -38,7 +42,7 @@
     browser.storage.onChanged.addListener(onStorageChanged)
     RedEyesStorage.loadLocalStorage().then(storage => {
       manuallyIdentified = storage.manuallyIdentified
-      initialLoading = false
+      // initialLoading = false
     })
     return () => {
       browser.storage.onChanged.removeListener(onStorageChanged)
@@ -64,7 +68,10 @@
               <tr>
                 <td>{item.identifier}</td>
                 <td>
-                  <select value={item.group} on:change|preventDefault={event => handleGroupChange(event, item)}>
+                  <select
+                    value={item.group}
+                    on:change|preventDefault={event => handleGroupChange(event, item)}
+                  >
                     <option value="transphobic">Transphobic</option>
                     <option value="trans_friendly">Trans-Friendly</option>
                     <option value="neutral">Neutral</option>

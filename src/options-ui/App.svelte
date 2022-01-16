@@ -1,15 +1,16 @@
-<script>
+<script lang="ts">
   import browser from 'webextension-polyfill'
-  import * as RedEyesStorage from '../lib/storage.js'
+  // import * as RedEyesStorage from '../lib/storage.js'
   import BloomFiltersManagementPage from './BloomFiltersManagementPage.svelte'
   import ManuallyIdentifiedAccounts from './ManuallyIdentifiedAccounts.svelte'
 
   import { onMount } from 'svelte'
 
-  const validTab = ['filters', 'manually-identified']
+  const validTab = ['filters', 'manually-identified'] as const
+  type TabPage = typeof validTab[number]
   let activatedTab = 'filters' // 'filters' | 'manually-identified'
 
-  function switchTab(page) {
+  function switchTab(page: TabPage) {
     if (!validTab.includes(page)) {
       throw new Error(`error: page "%s" is not valid!`)
     }
@@ -35,14 +36,14 @@
       type="button"
       class="tab"
       value="Filters"
-       class:activated={activatedTab == 'filters'}
+      class:activated={activatedTab == 'filters'}
       on:click|preventDefault={() => switchTab('filters')}
     />
     <input
       type="button"
       class="tab"
       value="M.I."
-       class:activated={activatedTab == 'manually-identified'}
+      class:activated={activatedTab == 'manually-identified'}
       on:click|preventDefault={() => switchTab('manually-identified')}
     />
   </nav>
@@ -66,13 +67,13 @@
     flex: 1;
     border: 0;
     margin: 0;
-    padding: .5em 0;
+    padding: 0.5em 0;
     font-size: larger;
     background-color: transparent;
     border-bottom: 2px solid grey;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    transition: background-color .2s;
+    transition: background-color 0.2s;
   }
   .tab.activated {
     border-top: 2px solid grey;

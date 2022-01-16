@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import browser from 'webextension-polyfill'
   import * as RedEyesStorage from '../lib/storage.js'
 
@@ -9,17 +9,17 @@
     group: 'transphobic',
   }
 
-  let draftFilterFileInput,
+  let draftFilterFileInput: HTMLInputElement,
     initialLoading = true,
-    installedBloomFilters = [],
+    installedBloomFilters: RedEyesFilter[] = [],
     showAddingIndicator = false,
     draftFilter = {
       name: '',
       group: 'transphobic',
     }
 
-  function handleRemoveButtonClick(event, item) {
-    async function removeFilterById(filterId) {
+  function handleRemoveButtonClick(_event: Event, item: RedEyesFilter) {
+    async function removeFilterById(filterId: string) {
       installedBloomFilters = installedBloomFilters.filter(bf => {
         return bf.id !== filterId
       })
@@ -38,8 +38,9 @@
     removeFilterById(item.id)
   }
 
-  function handleCheckboxToggle(event, item) {
-    const enabled = event.target.checked
+  function handleCheckboxToggle(event: Event, item: RedEyesFilter) {
+    const checkbox = event.target as HTMLInputElement
+    const enabled = checkbox.checked
     const filterToToggle = installedBloomFilters.find(function (f) {
       return f.id === item.id
     })
@@ -52,15 +53,18 @@
     })
   }
 
-  function onStorageChanged(changes) {
+  function onStorageChanged(changes: any) {
     if ('filters' in changes) {
       installedBloomFilters = changes.filters.newValue
     }
   }
 
-  function handleFileChange(event) {
+  function handleFileChange(event: Event) {
     const { target } = event
-    const file = target.files[0]
+    if (!(target instanceof HTMLInputElement)) {
+      throw new Error('unreachable')
+    }
+    const file = target.files![0]
     if (!file) {
       return
     }
@@ -69,10 +73,10 @@
     }
   }
 
-  function handleFormSubmit(event) {
-    const form = event.target
+  function handleFormSubmit(event: Event) {
+    const form = event.target as HTMLFormElement
     async function doSubmit() {
-      const filterFile = draftFilterFileInput.files[0]
+      const filterFile = draftFilterFileInput.files![0]
       if (!filterFile) {
         return
       }
@@ -80,7 +84,7 @@
       newFilter.id = (Date.now() + Math.random()).toString(36)
       newFilter.enabled = true
       const promise = RedEyesStorage.loadLocalStorage().then(async storage => {
-        const { filters, filterDatas } = storage 
+        const { filters, filterDatas } = storage
         filterDatas[newFilter.id] = await filterFile
           .arrayBuffer()
           .then(ab => new Uint32Array(ab))
