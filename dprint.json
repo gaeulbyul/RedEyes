@@ -3,6 +3,9 @@
   "typescript": {
   },
   "json": {
+    "associations": [
+      ".swcrc"
+    ]
   },
   "markdown": {
   },

@@ -33,6 +33,12 @@ const mv2 = {
         },
       },
       {
+        test: /\.tsx?$/,
+        // use: 'ts-loader',
+        use: require.resolve('swc-loader'),
+        exclude: /node_modules/,
+      },
+      {
         test: /\.css$/,
         use: require.resolve('css-loader'),
       },
