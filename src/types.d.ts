@@ -26,4 +26,3 @@ interface MatchedFilter {
   name: string
   group: string
 }
-

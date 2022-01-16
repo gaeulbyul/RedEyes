@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill'
-import * as RedEyesStorage from '../lib/storage.js'
+import * as RedEyesStorage from '../lib/storage'
 
 const targetUrlPatterns = [
   'https://twitter.com/*',

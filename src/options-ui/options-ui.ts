@@ -1,10 +1,10 @@
 /// <reference types="svelte" />
 
-import App from "./App.svelte";
+import App from './App.svelte'
 
-document.addEventListener("DOMContentLoaded", () => {
-    const target = document.getElementById("root")!;
-    new App({
-        target,
-    });
-});
+document.addEventListener('DOMContentLoaded', () => {
+  const target = document.getElementById('root')!
+  new App({
+    target,
+  })
+})

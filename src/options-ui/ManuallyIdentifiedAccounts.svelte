@@ -1,6 +1,6 @@
 <script lang="ts">
   import browser from 'webextension-polyfill'
-  import * as RedEyesStorage from '../lib/storage.js'
+  import * as RedEyesStorage from '../lib/storage'
 
   import { onMount } from 'svelte'
 

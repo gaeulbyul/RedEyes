@@ -69,7 +69,6 @@ task('srczip', async () => {
   await exec(`git archive -9 -v -o ./dist/${name}-v${version}.Source.zip HEAD`)
 })
 
-
 task('default', 'build')
 // task('clean-build', series('clean', 'build'))
 task('dist', parallel('zip', 'srczip'))

@@ -8,7 +8,7 @@
     "lib": ["DOM", "DOM.Iterable", "ES2020"],
     "allowJs": true,
     "checkJs": false,
-    "sourceMap": false,
+    "sourceMap": true,
     "outDir": "build/",
     "rootDir": "src/",
     "noEmit": true,

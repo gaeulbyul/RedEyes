@@ -1,5 +1,5 @@
-import * as Filtering from '../lib/filtering.js'
-import { getAddedElementsFromMutations } from './common.js'
+import * as Filtering from '../lib/filtering'
+import { getAddedElementsFromMutations } from './common'
 
 function indicateElement(elem: HTMLElement, identifier: string, results: MatchedFilter[]) {
   const matchedFilter = results[0]
@@ -18,11 +18,15 @@ function indicateElement(elem: HTMLElement, identifier: string, results: Matched
     className = 'redeyes-neutral'
     tooltip = 'this user is neither phobic nor friendly!'
   }
-  tooltip += '\n' + JSON.stringify({
-    identifier,
-    name: matchedFilter.name,
-    group: matchedFilter.group,
-  }, null, 2)
+  tooltip += '\n' + JSON.stringify(
+    {
+      identifier,
+      name: matchedFilter.name,
+      group: matchedFilter.group,
+    },
+    null,
+    2,
+  )
   elem.classList.add(className)
   elem.title = tooltip
   elem.setAttribute('data-redeyes', matchedFilter.group)
@@ -172,8 +176,6 @@ function main() {
   })
   document.body.classList.toggle('darkmode', isDark(colorThemeTag))
   document.body.appendChild(document.createElement('script'))
-
 }
-
 
 main()

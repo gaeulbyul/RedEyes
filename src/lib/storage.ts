@@ -17,8 +17,9 @@ export async function loadLocalStorageOnlyFilters(): Promise<{ filters: RedEyesS
   return storage
 }
 
-export async function loadLocalStorageOnlyManuallyIdentified(
-): Promise<{ manuallyIdentified: RedEyesStorage['manuallyIdentified'] }> {
+export async function loadLocalStorageOnlyManuallyIdentified(): Promise<
+  { manuallyIdentified: RedEyesStorage['manuallyIdentified'] }
+> {
   const storage = await browser.storage.local.get('manuallyIdentified') as any
   storage.manuallyIdentified ??= []
   return storage
