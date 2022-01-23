@@ -1,23 +1,23 @@
 @charset "utf-8";
 
 body:not(.darkmode) {
-    --redeyes-var-transphobic: crimson;
-    --redeyes-var-trans-friendly: green;
+    --redeyes-var-phobic: crimson;
+    --redeyes-var-friendly: green;
 }
 
 body.darkmode {
-    --redeyes-var-transphobic: tomato;
-    --redeyes-var-trans-friendly: chartreuse;
+    --redeyes-var-phobic: tomato;
+    --redeyes-var-friendly: chartreuse;
 }
 
-[data-redeyes=transphobic],
-.redeyes-transphobic {
-    color: var(--redeyes-var-transphobic) !important;
+[data-redeyes=phobic],
+.redeyes-phobic {
+    color: var(--redeyes-var-phobic) !important;
     font-family: 'comic sans ms', fantasy;
 }
 
-[data-redeyes=trans_friendly],
-.redeyes-trans-friendly {
-    color: var(--redeyes-var-trans-friendly) !important;
+[data-redeyes=friendly],
+.redeyes-friendly {
+    color: var(--redeyes-var-friendly) !important;
 }
 

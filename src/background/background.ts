@@ -31,11 +31,11 @@ browser.contextMenus.onClicked.addListener((clickInfo, _tab) => {
     return
   }
   switch (clickInfo.menuItemId) {
-    case 'twitter-add-identifier-transphobic':
-      addTwitterIdentifier(linkUrl, 'transphobic')
+    case 'twitter-add-identifier-phobic':
+      addTwitterIdentifier(linkUrl, 'phobic')
       break
-    case 'twitter-add-identifier-transfriendly':
-      addTwitterIdentifier(linkUrl, 'trans_friendly')
+    case 'twitter-add-identifier-friendly':
+      addTwitterIdentifier(linkUrl, 'friendly')
       break
     case 'twitter-add-identifier-neutral':
       addTwitterIdentifier(linkUrl, 'neutral')
@@ -56,17 +56,17 @@ async function initializeContextMenus() {
   browser.contextMenus.create({
     contexts: ['link'],
     parentId: 'twitter-add-identifier',
-    id: 'twitter-add-identifier-transphobic',
+    id: 'twitter-add-identifier-phobic',
     targetUrlPatterns,
-    title: 'Transphobic',
+    title: 'Phobic',
   })
 
   browser.contextMenus.create({
     contexts: ['link'],
     parentId: 'twitter-add-identifier',
-    id: 'twitter-add-identifier-transfriendly',
+    id: 'twitter-add-identifier-friendly',
     targetUrlPatterns,
-    title: 'Trans-Friendly',
+    title: 'Friendly',
   })
 
   browser.contextMenus.create({

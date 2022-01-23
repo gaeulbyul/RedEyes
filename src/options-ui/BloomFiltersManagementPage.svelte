@@ -6,7 +6,7 @@
 
   const initialDraftFilter = {
     name: '',
-    group: 'transphobic',
+    group: 'phobic',
   }
 
   let draftFilterFileInput: HTMLInputElement,
@@ -15,7 +15,7 @@
     showAddingIndicator = false,
     draftFilter = {
       name: '',
-      group: 'transphobic',
+      group: 'phobic',
     }
 
   function handleRemoveButtonClick(_event: Event, item: RedEyesFilter) {
@@ -180,8 +180,8 @@
           Group:
           <br />
           <select name="filter-group" required bind:value={draftFilter.group}>
-            <option value="transphobic"> Transphobic </option>
-            <option value="trans_friendly"> Trans-Friendly </option>
+            <option value="phobic">Phobic</option>
+            <option value="friendly">Friendly</option>
           </select>
         </label>
         <hr />

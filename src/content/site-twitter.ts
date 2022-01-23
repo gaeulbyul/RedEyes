@@ -40,12 +40,12 @@ function indicateElement(elem: HTMLElement, identifier: string, results: Matched
   }
   let className = ''
   let tooltip = ''
-  if (matchedFilter.group == 'trans_friendly') {
-    className = 'redeyes-trans-friendly'
-    tooltip = 'this user is in the transfriendly!'
-  } else if (matchedFilter.group == 'transphobic') {
-    className = 'redeyes-transphobic'
-    tooltip = 'this user is in the transphobic!'
+  if (matchedFilter.group == 'friendly') {
+    className = 'redeyes-friendly'
+    tooltip = 'this user is in the friendly!'
+  } else if (matchedFilter.group == 'phobic') {
+    className = 'redeyes-phobic'
+    tooltip = 'this user is in the phobic!'
   } else if (matchedFilter.group == 'neutral') {
     className = 'redeyes-neutral'
     tooltip = 'this user is neither phobic nor friendly!'
@@ -81,7 +81,7 @@ async function handleUserCellElem(elem: HTMLElement) {
     Filtering.identify(identifier).then(results => {
       indicateElement(ln, identifier, results)
       const isItself = ln.isSameNode(userLink)
-      const isHarmful = results[0].group === 'transphobic'
+      const isHarmful = results[0].group === 'phobic'
       if (isItself && isHarmful) {
         elem.children[0].classList.add('assigned-label-transphobic')
       }
@@ -104,7 +104,7 @@ async function handleTweetElem(elem: HTMLElement) {
     }
     Filtering.identify(identifier).then(results => {
       indicateElement(ln, identifier, results)
-      const isHarmful = results[0].group === 'transphobic'
+      const isHarmful = results[0].group === 'phobic'
       if (isAuthor && isHarmful) {
         // article[data-testid=tweet] elem은 class가 바뀌면서
         // assigned-label-transphobic이 날라가더라.

@@ -1,11 +1,11 @@
 @charset "utf-8";
 
-[data-redeyes=transphobic]
+[data-redeyes=phobic]
 img[src*="twimg.com/emoji/"] {
-    background-color: var(--redeyes-var-transphobic);
+    background-color: var(--redeyes-var-phobic);
 }
 
-[data-redeyes=trans_friendly]
+[data-redeyes=friendly]
 img[src*="twimg.com/emoji/"] {
-    background-color: var(--redeyes-var-trans-friendly);
+    background-color: var(--redeyes-var-friendly);
 }

@@ -1,5 +1,5 @@
 // TODO: rename as harmful/friendly
-type RedEyesFilterGroup = 'transphobic' | 'trans_friendly' | 'neutral'
+type RedEyesFilterGroup = 'phobic' | 'friendly' | 'neutral'
 
 interface RedEyesFilter {
   id: string
