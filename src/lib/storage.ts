@@ -1,9 +1,19 @@
 import browser from 'webextension-polyfill'
 
-const defaultStorage: RedEyesStorage = {
+export const defaultStorage = Object.freeze<RedEyesStorage>({
   filters: [],
   filterDatas: {},
   manuallyIdentified: {},
+  colors: {
+    phobicLight: 'crimson',
+    phobicDark: 'tomato',
+    friendlyLight: 'green',
+    friendlyDark: 'chartreuse',
+  },
+})
+
+type RedEyesStorageOnly = {
+  [key in keyof RedEyesStorage]: RedEyesStorage[key]
 }
 
 export async function loadLocalStorage(): Promise<RedEyesStorage> {
@@ -11,17 +21,9 @@ export async function loadLocalStorage(): Promise<RedEyesStorage> {
   return Object.assign(Object.create(null), defaultStorage, storage)
 }
 
-export async function loadLocalStorageOnlyFilters(): Promise<{ filters: RedEyesStorage['filters'] }> {
-  const storage = await browser.storage.local.get('filters') as any
-  storage.filters ??= []
-  return storage
-}
-
-export async function loadLocalStorageOnlyManuallyIdentified(): Promise<
-  { manuallyIdentified: RedEyesStorage['manuallyIdentified'] }
-> {
-  const storage = await browser.storage.local.get('manuallyIdentified') as any
-  storage.manuallyIdentified ??= []
+export async function loadLocalStorageOnly(key: keyof RedEyesStorage): Promise<RedEyesStorageOnly> {
+  const storage = await browser.storage.local.get(key) as any
+  storage[key] ??= defaultStorage[key]
   return storage
 }
 

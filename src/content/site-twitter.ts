@@ -1,5 +1,6 @@
 import * as Filtering from '../lib/filtering'
 import { getAddedElementsFromMutations } from './common'
+import { initColors, toggleDarkMode } from './colors'
 
 const invalidUserNames = Object.freeze([
   'about',
@@ -177,13 +178,13 @@ function isDark(colorThemeTag: HTMLMetaElement) {
 function handleDarkMode() {
   const colorThemeTag = document.querySelector<HTMLMetaElement>('meta[name=theme-color]')!
   const darkModeObserver = new MutationObserver(() => {
-    document.body.classList.toggle('darkmode', isDark(colorThemeTag))
+    toggleDarkMode(isDark(colorThemeTag))
   })
   darkModeObserver.observe(colorThemeTag, {
     attributeFilter: ['content'],
     attributes: true,
   })
-  document.body.classList.toggle('darkmode', isDark(colorThemeTag))
+  toggleDarkMode(isDark(colorThemeTag))
 }
 
 function collectElementsBySelector(rootElem: HTMLElement, selector: string): HTMLElement[] {
@@ -197,6 +198,7 @@ function collectElementsBySelector(rootElem: HTMLElement, selector: string): HTM
 
 function main() {
   handleDarkMode()
+  initColors()
   const touched = new WeakSet()
   const elemObserver = new MutationObserver(mutations => {
     for (const elem of getAddedElementsFromMutations(mutations)) {

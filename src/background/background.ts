@@ -18,7 +18,7 @@ async function addTwitterIdentifier(urlstr: string, group: RedEyesFilterGroup) {
   }
   userName = userName.toLowerCase()
   const identifier = `twitter.com/${userName}`
-  const { manuallyIdentified } = await RedEyesStorage.loadLocalStorageOnlyManuallyIdentified()
+  const { manuallyIdentified } = await RedEyesStorage.loadLocalStorageOnly('manuallyIdentified')
   manuallyIdentified[identifier] = group
   return RedEyesStorage.saveLocalStorage({
     manuallyIdentified,
