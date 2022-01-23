@@ -1,7 +1,39 @@
 import * as Filtering from '../lib/filtering'
 import { getAddedElementsFromMutations } from './common'
 
+const invalidUserNames = Object.freeze([
+  'about',
+  'account',
+  'blog',
+  'compose',
+  'download',
+  'explore',
+  'followers',
+  'followings',
+  'hashtag',
+  'home',
+  'i',
+  'intent',
+  'lists',
+  'login',
+  'logout',
+  'messages',
+  'notifications',
+  'oauth',
+  'privacy',
+  'search',
+  'session',
+  'settings',
+  'share',
+  'signup',
+  'tos',
+  'welcome',
+])
+
 function indicateElement(elem: HTMLElement, identifier: string, results: MatchedFilter[]) {
+  if (results.length <= 0) {
+    return
+  }
   const matchedFilter = results[0]
   if (!matchedFilter) {
     return
@@ -37,135 +69,112 @@ function indicateElement(elem: HTMLElement, identifier: string, results: Matched
   })
 }
 
-function extractUserNameFromPath(path: string) {
-  const splitted = path.split('/').slice(1)
-  if (splitted.length <= 0) {
+async function handleUserCellElem(elem: HTMLElement) {
+  const userLinkName = elem.querySelector<HTMLAnchorElement>('a[href^="/"] div[dir=ltr] > span')!
+  const userLink = userLinkName.closest('a[href^="/"]')
+  const mentions = elem.querySelectorAll<HTMLAnchorElement>('a[href^="/"]')
+  mentions.forEach(ln => {
+    const identifier = extractUserIdentifierFromLink(ln)
+    if (!identifier) {
+      return
+    }
+    Filtering.identify(identifier).then(results => {
+      indicateElement(ln, identifier, results)
+      const isItself = ln.isSameNode(userLink)
+      const isHarmful = results[0].group === 'transphobic'
+      if (isItself && isHarmful) {
+        elem.children[0].classList.add('assigned-label-transphobic')
+      }
+    })
+  })
+}
+
+async function handleTweetElem(elem: HTMLElement) {
+  const permalink = elem.querySelector('a[href^="/"] > time')?.parentElement
+  if (!permalink) {
+    console.warn('warning: permalink is missing. (maybe promotion-tweet?)')
+    return
+  }
+  const userLinks = elem.querySelectorAll<HTMLAnchorElement>('a[href^="/"]')
+  userLinks.forEach(ln => {
+    const isAuthor = ln.isSameNode(permalink)
+    const identifier = extractUserIdentifierFromLink(ln)
+    if (!identifier) {
+      return
+    }
+    Filtering.identify(identifier).then(results => {
+      indicateElement(ln, identifier, results)
+      const isHarmful = results[0].group === 'transphobic'
+      if (isAuthor && isHarmful) {
+        // article[data-testid=tweet] elem은 class가 바뀌면서
+        // assigned-label-transphobic이 날라가더라.
+        // 따라서 그 하위 요소 중에서 클래스네임을 부여한다.
+        elem.children[0].classList.add('assigned-label-transphobic')
+        // elem.classList.add('assigned-label-transphobic')
+        elem.setAttribute('data-redeyes-tweet', results[0].group)
+      }
+    })
+  })
+}
+
+async function handleUserNameElem(elem: HTMLElement) {
+  const actualUserNameElem = elem.querySelector('div[dir=ltr] > span')!
+  const userName = actualUserNameElem.textContent!.replace(/^@/, '')
+  const identifier = 'twitter.com/' + userName.toLowerCase()
+  Filtering.identify(identifier).then(results => {
+    indicateElement(elem, identifier, results)
+  })
+}
+
+async function handleUserDescriptionElem(elem: HTMLElement) {
+  const mentions = elem.querySelectorAll<HTMLAnchorElement>('a[href^="/"]')
+  mentions.forEach(ln => {
+    const identifier = extractUserIdentifierFromLink(ln)
+    if (!identifier) {
+      return
+    }
+    Filtering.identify(identifier).then(results => {
+      indicateElement(ln, identifier, results)
+    })
+  })
+}
+
+async function handleHoverLayer(elem: HTMLElement) {
+  const mentions = elem.querySelectorAll<HTMLAnchorElement>('a[href^="/"]')
+  mentions.forEach(ln => {
+    const { pathname } = ln
+    if (pathname.endsWith('/following') || pathname.endsWith('/followers')) {
+      return
+    }
+    const identifier = extractUserIdentifierFromLink(ln)
+    if (!identifier) {
+      return
+    }
+    Filtering.identify(identifier).then(results => {
+      indicateElement(ln, identifier, results)
+    })
+  })
+}
+
+function extractUserIdentifierFromLink(link: HTMLAnchorElement): string | null {
+  const pattern = /^\/([0-9a-z_]{1,15})/i
+  const maybeUserNameMatch = pattern.exec(link.pathname)
+  if (!maybeUserNameMatch) {
     return null
   }
-  const name = splitted[0].toLowerCase()
-  if (invalidUserNames.includes(name)) {
+  const maybeUserName = maybeUserNameMatch[1]!
+  if (invalidUserNames.includes(maybeUserName)) {
     return null
   }
-  return name
-}
-
-async function handleUserLink(elem: HTMLAnchorElement) {
-  const userName = extractUserNameFromPath(elem.pathname || '')
-  if (!(userName && validateUserName(userName))) {
-    return
-  }
-  // "xxx, yyy님도 이 계정을 팔로우함"에서 xxx, yyy에 잘못 색칠될 수 있음
-  if (elem.pathname.includes('/followers_you_follow')) {
-    return
-  }
-  const identifier = `twitter.com/${userName}`
-  const results = await Filtering.identify(identifier)
-  if (results.length > 0) {
-    indicateElement(elem, identifier, results)
-  }
-}
-
-async function handleUserSpanElem(elem: HTMLElement) {
-  const userName = (elem.textContent || '').trim().toLowerCase()
-  if (!/^@[0-9A-Z_]{1,15}$/i.test(userName)) {
-    return
-  }
-  const identifier = `twitter.com/${userName.slice(1)}`
-  const results = await Filtering.identify(identifier)
-  if (results.length > 0) {
-    indicateElement(elem, identifier, results)
-  }
-}
-
-const invalidUserNames = Object.freeze([
-  'about',
-  'account',
-  'blog',
-  'compose',
-  'download',
-  'explore',
-  'followers',
-  'followings',
-  'hashtag',
-  'home',
-  'i',
-  'intent',
-  'lists',
-  'login',
-  'logout',
-  'messages',
-  'notifications',
-  'oauth',
-  'privacy',
-  'search',
-  'session',
-  'settings',
-  'share',
-  'signup',
-  'tos',
-  'welcome',
-])
-
-function validateUserName(userName: string) {
-  const userNamePattern = /^[0-9a-z_]{1,15}$/i
-  if (!userNamePattern.test(userName)) {
-    return false
-  }
-  if (invalidUserNames.includes(userName)) {
-    return false
-  }
-  return true
+  const loweredUserName = maybeUserName.toLowerCase()
+  return `twitter.com/${loweredUserName}`
 }
 
 function isDark(colorThemeTag: HTMLMetaElement) {
   return colorThemeTag.content.toUpperCase() !== '#FFFFFF'
 }
 
-function main() {
-  const touched = new WeakSet()
-  const userNameObserver = new MutationObserver(mutations => {
-    Array.from(getAddedElementsFromMutations(mutations)).forEach(elem => {
-      if (touched.has(elem)) {
-        return
-      }
-      touched.add(elem)
-      {
-        const links: HTMLAnchorElement[] = []
-        const selector = 'a[href^="/"]'
-        if (elem instanceof HTMLAnchorElement && elem.matches(selector)) {
-          links.push(elem)
-        }
-        Array.from(elem.querySelectorAll<HTMLAnchorElement>(selector))
-          .filter(n => !touched.has(n))
-          .forEach(n => links.push(n))
-        links.forEach(a => {
-          touched.add(a)
-          handleUserLink(a)
-        })
-      }
-      {
-        const nameElems = []
-        const selector = 'div[dir=ltr]>span'
-        if (elem.matches(selector)) {
-          nameElems.push(elem)
-        }
-        Array.from(elem.querySelectorAll(selector))
-          .filter(n => !touched.has(n))
-          .forEach(n => nameElems.push(n))
-        if (nameElems.length > 0) {
-          //debugger
-        }
-        nameElems.forEach(el => {
-          touched.add(el)
-          handleUserSpanElem(el)
-        })
-      }
-    })
-  })
-  userNameObserver.observe(document.body, {
-    subtree: true,
-    childList: true,
-  })
+function handleDarkMode() {
   const colorThemeTag = document.querySelector<HTMLMetaElement>('meta[name=theme-color]')!
   const darkModeObserver = new MutationObserver(() => {
     document.body.classList.toggle('darkmode', isDark(colorThemeTag))
@@ -175,7 +184,46 @@ function main() {
     attributes: true,
   })
   document.body.classList.toggle('darkmode', isDark(colorThemeTag))
-  document.body.appendChild(document.createElement('script'))
+}
+
+function collectElementsBySelector(rootElem: HTMLElement, selector: string): HTMLElement[] {
+  const result: HTMLElement[] = []
+  if (rootElem.matches(selector)) {
+    result.push(rootElem)
+  }
+  result.push(...rootElem.querySelectorAll<HTMLElement>(selector))
+  return result
+}
+
+function main() {
+  handleDarkMode()
+  const touched = new WeakSet()
+  const elemObserver = new MutationObserver(mutations => {
+    for (const elem of getAddedElementsFromMutations(mutations)) {
+      if (touched.has(elem)) {
+        return
+      }
+      touched.add(elem)
+      const tweetElems = collectElementsBySelector(elem, 'article[data-testid=tweet]')
+      tweetElems.forEach(handleTweetElem)
+      // followers, followings, ...
+      const userCellElems = collectElementsBySelector(elem, 'div[data-testid=UserCell]')
+      userCellElems.forEach(handleUserCellElem)
+      // username in profile
+      const userNameElems = collectElementsBySelector(elem, 'div[data-testid=UserName')
+      userNameElems.forEach(handleUserNameElem)
+      const userDescriptionElems = collectElementsBySelector(elem, 'div[data-testid=UserDescription]')
+      userDescriptionElems.forEach(handleUserDescriptionElem)
+      const layers = document.getElementById('layers')
+      if (layers) {
+        handleHoverLayer(layers)
+      }
+    }
+  })
+  elemObserver.observe(document.body, {
+    subtree: true,
+    childList: true,
+  })
 }
 
 main()

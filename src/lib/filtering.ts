@@ -42,6 +42,9 @@ function refreshFilters(filters: RedEyesFilter[], filterDatas: RedEyesFilterData
     }
     result.push(initializeFilter(filter, filterData))
   })
+  if (result.length <= 0) {
+    console.warn('[RedEyes] warning: no filter installed')
+  }
   return result
 }
 
@@ -50,7 +53,7 @@ function refreshManuallyIdentifiedEntries(manuallyIdentified: RedEyesManuallyIde
   return result
 }
 
-export async function identify(identifier: string) {
+export async function identify(identifier: string): Promise<MatchedFilter[]> {
   const miEntries = await preparedManuallyIdentifiedEntries
   if (identifier in miEntries) {
     const group = miEntries[identifier]

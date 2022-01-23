@@ -22,5 +22,5 @@ interface RedEyesStorage {
 interface MatchedFilter {
   id: string
   name: string
-  group: string
+  group: RedEyesFilterGroup
 }
