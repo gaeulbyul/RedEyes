@@ -42,7 +42,7 @@
 
   onMount(async () => {
     browser.storage.onChanged.addListener(onStorageChanged)
-    RedEyesStorage.loadLocalStorage().then(storage => {
+    RedEyesStorage.loadLocalStorageOnly('manuallyIdentified').then(storage => {
       manuallyIdentified = storage.manuallyIdentified
       // initialLoading = false
     })
@@ -57,7 +57,7 @@
     <fieldset>
       <legend>M.I.:</legend>
       <div class="tablewrapper">
-        <table>
+        <table class="zebra radius">
           <thead>
             <tr>
               <th>Identifier</th>
@@ -96,37 +96,5 @@
 </div>
 
 <style>
-  .tablewrapper {
-    padding: 5px;
-    border: 1px solid grey;
-    border-radius: 4px;
-  }
-  table {
-    width: 100%;
-    border: 0;
-    border-collapse: collapse;
-  }
-
-  td:first-child {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-  }
-
-  td:last-child {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-  }
-
-  tr:nth-of-type(even) {
-    background-color: wheat;
-  }
-
-  th {
-    border-bottom: 3px double grey;
-  }
-
-  th,
-  td {
-    padding: 0 0.5em;
-  }
+  @import url('./table.css');
 </style>

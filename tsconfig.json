@@ -1,6 +1,6 @@
 {
   "include": ["src/**/*"],
-  "exclude": ["src/vendor/*", "*/**/flycheck_*"],
+  "exclude": ["src/vendor/*", "*/**/flycheck_*", "/build-mv2", "/build-mv3"],
   "compilerOptions": {
     "target": "es2020",
     "module": "es2020",

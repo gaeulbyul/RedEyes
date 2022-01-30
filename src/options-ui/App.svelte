@@ -3,10 +3,11 @@
   // import * as RedEyesStorage from '../lib/storage.js'
   import BloomFiltersManagementPage from './BloomFiltersManagementPage.svelte'
   import ManuallyIdentifiedAccounts from './ManuallyIdentifiedAccounts.svelte'
+  import ColorsPage from './ColorsPage.svelte'
 
   import { onMount } from 'svelte'
 
-  const validTab = ['filters', 'manually-identified'] as const
+  const validTab = ['filters', 'manually-identified', 'colors'] as const
   type TabPage = typeof validTab[number]
   let activatedTab = 'filters' // 'filters' | 'manually-identified'
 
@@ -46,12 +47,22 @@
       class:activated={activatedTab == 'manually-identified'}
       on:click|preventDefault={() => switchTab('manually-identified')}
     />
+    <input
+      type="button"
+      class="tab"
+      value="Colors"
+      class:activated={activatedTab == 'colors'}
+      on:click|preventDefault={() => switchTab('colors')}
+    />
   </nav>
   <div class="tabpage" class:activated={activatedTab == 'filters'}>
     <BloomFiltersManagementPage />
   </div>
   <div class="tabpage" class:activated={activatedTab == 'manually-identified'}>
     <ManuallyIdentifiedAccounts />
+  </div>
+  <div class="tabpage" class:activated={activatedTab == 'colors'}>
+    <ColorsPage />
   </div>
   <footer id="footer">
     {footerText()}
@@ -74,6 +85,9 @@
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     transition: background-color 0.2s;
+  }
+  .tab:hover {
+    background-color: lightgrey;
   }
   .tab.activated {
     border-top: 2px solid grey;

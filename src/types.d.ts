@@ -8,12 +8,11 @@ interface RedEyesFilter {
   enabled: boolean
 }
 
-
 type RedEyesFilterDatas = Record<string, number[]>
 
 type RedEyesManuallyIdentifiedEntries = Record<string, RedEyesFilterGroup>
 
-type RedEyesColorSettings = {
+interface RedEyesColors {
   phobicLight: string
   phobicDark: string
   friendlyLight: string
@@ -24,7 +23,7 @@ interface RedEyesStorage {
   filters: RedEyesFilter[]
   filterDatas: RedEyesFilterDatas
   manuallyIdentified: RedEyesManuallyIdentifiedEntries
-  colors: RedEyesColorSettings
+  colors: RedEyesColors
 }
 
 type RedEyesStorageChanges = {

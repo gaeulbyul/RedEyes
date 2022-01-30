@@ -2,21 +2,9 @@ import browser from 'webextension-polyfill'
 
 import { loadLocalStorageOnly, defaultStorage } from '../lib/storage'
 
-/*
-body:not(.darkmode) {
-    --redeyes-var-phobic: crimson;
-    --redeyes-var-friendly: green;
-}
-
-body.darkmode {
-    --redeyes-var-phobic: tomato;
-    --redeyes-var-friendly: chartreuse;
-}
-*/
-
 // https://davidwalsh.name/css-variables-javascript
 
-const currentColors: RedEyesColorSettings = {
+const currentColors: RedEyesColors = {
   ...defaultStorage.colors
 }
 
@@ -24,7 +12,7 @@ const currentColorScheme = {
   dark: false
 }
 
-export function applyColors(colors: RedEyesColorSettings) {
+export function applyColors(colors: RedEyesColors) {
   Object.assign(currentColors, colors)
   const isDark = currentColorScheme.dark
   const colorForPhobic = isDark ? colors.phobicDark : colors.phobicLight

@@ -1,15 +1,12 @@
 import browser from 'webextension-polyfill'
 
+import colorPresets from './color-presets'
+
 export const defaultStorage = Object.freeze<RedEyesStorage>({
   filters: [],
-  filterDatas: {},
-  manuallyIdentified: {},
-  colors: {
-    phobicLight: 'crimson',
-    phobicDark: 'tomato',
-    friendlyLight: 'green',
-    friendlyDark: 'chartreuse',
-  },
+  filterDatas: Object.create(null),
+  manuallyIdentified: Object.create(null),
+  colors: Object.assign(Object.create(null), colorPresets[0]),
 })
 
 type RedEyesStorageOnly = {
