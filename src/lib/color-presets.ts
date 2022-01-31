@@ -10,7 +10,7 @@ const colorPresets: Record<string, RedEyesColors> = {
     phobicDark: '#ffaa32',
     friendlyLight: '#3358c9',
     friendlyDark: '#88a0fc',
-  })
+  }),
 }
 
 export default colorPresets

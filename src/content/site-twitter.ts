@@ -1,6 +1,7 @@
 import * as Filtering from '../lib/filtering'
-import { getAddedElementsFromMutations } from './common'
 import { initColors, toggleDarkMode } from './colors'
+import { getAddedElementsFromMutations } from './common'
+import { wikipediaIdentifier } from './identifier'
 
 const invalidUserNames = Object.freeze([
   'about',
@@ -70,6 +71,44 @@ function indicateElement(elem: HTMLElement, identifier: string, results: Matched
   })
 }
 
+function extractURL(elem: HTMLAnchorElement): URL | null {
+  try {
+    const hiddenPrefix = elem.childNodes[0].textContent!.trim()
+    const visible = elem.childNodes[1].textContent!.trim()
+    const hiddenSuffix = elem.childNodes[2].textContent!.trim()
+    return new URL(hiddenPrefix + visible + hiddenSuffix)
+  } catch (err) {
+    console.log('warning: failed to convert to url string', elem, err)
+    return null
+  }
+}
+
+async function handleExternalLink(elem: HTMLAnchorElement) {
+  if (elem.matches('[data-testid^=card] a')) {
+    // 트윗 카드의 경우 다른 방법으로 URL을 알아와야 한다.
+    // content scripts상으론 어렵고, redux store를 통해야 할 듯.
+    // 일단 이건 TODO
+    return
+  }
+  const realUrl = extractURL(elem)
+  if (!realUrl) {
+    return
+  }
+  let identifier = ''
+  switch (true) {
+    case realUrl.hostname == 'wikipedia.org':
+    case realUrl.hostname.endsWith('.wikipedia.org'):
+      identifier = wikipediaIdentifier(realUrl)
+      break
+  }
+  if (!identifier) {
+    return
+  }
+  Filtering.identify(identifier).then(results => {
+    indicateElement(elem, identifier, results)
+  })
+}
+
 async function handleUserCellElem(elem: HTMLElement) {
   const userLinkName = elem.querySelector<HTMLAnchorElement>('a[href^="/"] div[dir=ltr] > span')!
   const userLink = userLinkName.closest('a[href^="/"]')
@@ -122,6 +161,9 @@ async function handleTweetElem(elem: HTMLElement) {
       }
     })
   })
+  const externalLinkSelector = 'a[href^="https://t.co/"][rel~=noopener]'
+  const externalLinks = elem.querySelectorAll<HTMLAnchorElement>(externalLinkSelector)
+  externalLinks.forEach(handleExternalLink)
 }
 
 async function handleUserNameElem(elem: HTMLElement) {

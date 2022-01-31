@@ -5,11 +5,11 @@ import { loadLocalStorageOnly, defaultStorage } from '../lib/storage'
 // https://davidwalsh.name/css-variables-javascript
 
 const currentColors: RedEyesColors = {
-  ...defaultStorage.colors
+  ...defaultStorage.colors,
 }
 
 const currentColorScheme = {
-  dark: false
+  dark: false,
 }
 
 export function applyColors(colors: RedEyesColors) {
@@ -33,6 +33,6 @@ export function initColors() {
     }
     applyColors(changes.colors.newValue)
   })
-  
-  loadLocalStorageOnly('colors').then(({colors}) => applyColors(colors))
+
+  loadLocalStorageOnly('colors').then(({ colors }) => applyColors(colors))
 }

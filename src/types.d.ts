@@ -38,3 +38,5 @@ interface MatchedFilter {
   name: string
   group: RedEyesFilterGroup
 }
+
+type URLLike = URL | Location | HTMLAnchorElement
