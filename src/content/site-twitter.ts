@@ -93,14 +93,16 @@ async function handleUserCellElem(elem: HTMLElement) {
 }
 
 async function handleTweetElem(elem: HTMLElement) {
-  const permalink = elem.querySelector('a[href^="/"] > time')?.parentElement
+  const permalinkInTimeline = elem.querySelector('a[href*="/status/"] > time')?.parentElement
+  const permalinkInTweetDetail = elem.querySelector('a[href*="/status/"] > span')?.parentElement
+  const permalink = permalinkInTimeline || permalinkInTweetDetail
   if (!permalink) {
     console.warn('warning: permalink is missing. (maybe promotion-tweet?)')
     return
   }
   const userLinks = elem.querySelectorAll<HTMLAnchorElement>('a[href^="/"]')
   userLinks.forEach(ln => {
-    const isAuthor = ln.isSameNode(permalink)
+    const isAuthor = permalink && ln.isSameNode(permalink)
     const identifier = extractUserIdentifierFromLink(ln)
     if (!identifier) {
       return
