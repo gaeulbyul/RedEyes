@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+.redeyes-phobic {
+    outline: 1px solid var(--redeyes-var-phobic) !important;
+}
+
+.redeyes-phobic.wiki-link-external::before {
+    background-color: var(--redeyes-var-phobic) !important;
+}
+
+.redeyes-friendly {
+    outline: 1px solid var(--redeyes-var-friendly) !important;
+}
+
+.redeyes-friendly.wiki-link-external::before {
+    background-color: var(--redeyes-var-friendly) !important;
+}

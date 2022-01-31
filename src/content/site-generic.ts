@@ -32,6 +32,11 @@ function indicateElement(elem: HTMLElement, identifier: string, results: Matched
   elem.classList.add(className)
   elem.title = tooltip
   elem.setAttribute('data-redeyes', matchedFilter.group)
+  const spans = elem.querySelectorAll('span')
+  spans.forEach(span => {
+    span.classList.add(className)
+    span.setAttribute('data-redeyes', matchedFilter.group)
+  })
 }
 
 async function handleLink(elem: HTMLAnchorElement) {
