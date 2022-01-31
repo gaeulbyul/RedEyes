@@ -12,6 +12,10 @@ export function getIdentifier(url: string | URLLike): string | null {
         return wikipediaIdentifier(url)
       }
       break
+    case hostname == 'twitter.com':
+    case hostname == 'mobile.twitter.com':
+      return twitterIdentifier(url)
+      break
     default:
       return hostname
   }
@@ -33,3 +37,45 @@ function wikipediaIdentifier(url: URLLike) {
   return 'wikipedia.org' + path
 }
 
+const invalidUserNamesInTwitter = Object.freeze([
+  'about',
+  'account',
+  'blog',
+  'compose',
+  'download',
+  'explore',
+  'followers',
+  'followings',
+  'hashtag',
+  'home',
+  'i',
+  'intent',
+  'lists',
+  'login',
+  'logout',
+  'messages',
+  'notifications',
+  'oauth',
+  'privacy',
+  'search',
+  'session',
+  'settings',
+  'share',
+  'signup',
+  'tos',
+  'welcome',
+])
+
+export function twitterIdentifier(url: URLLike): string | null {
+  const pattern = /^\/([0-9a-z_]{1,15})/i
+  const maybeUserNameMatch = pattern.exec(url.pathname)
+  if (!maybeUserNameMatch) {
+    return null
+  }
+  const maybeUserName = maybeUserNameMatch[1]!
+  if (invalidUserNamesInTwitter.includes(maybeUserName)) {
+    return null
+  }
+  const loweredUserName = maybeUserName.toLowerCase()
+  return `twitter.com/${loweredUserName}`
+}

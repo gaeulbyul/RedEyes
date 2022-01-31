@@ -45,7 +45,7 @@ async function handleLink(elem: HTMLAnchorElement) {
 }
 
 function main() {
-  const selector = 'a[href^="http:"], a[href^="/"]'
+  const selector = 'a[href]:not([href^="#"])'
   initColors()
   const touched = new WeakSet()
   document.querySelectorAll<HTMLAnchorElement>(selector).forEach(link => {

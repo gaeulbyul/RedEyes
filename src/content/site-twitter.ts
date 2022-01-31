@@ -1,36 +1,7 @@
 import * as Filtering from '../lib/filtering'
 import { initColors, toggleDarkMode } from './colors'
 import { getAddedElementsFromMutations, collectElementsBySelector } from './common'
-import { getIdentifier } from './identifier'
-
-const invalidUserNames = Object.freeze([
-  'about',
-  'account',
-  'blog',
-  'compose',
-  'download',
-  'explore',
-  'followers',
-  'followings',
-  'hashtag',
-  'home',
-  'i',
-  'intent',
-  'lists',
-  'login',
-  'logout',
-  'messages',
-  'notifications',
-  'oauth',
-  'privacy',
-  'search',
-  'session',
-  'settings',
-  'share',
-  'signup',
-  'tos',
-  'welcome',
-])
+import { getIdentifier, twitterIdentifier } from './identifier'
 
 function indicateElement(elem: HTMLElement, identifier: string, results: MatchedFilter[]) {
   if (results.length <= 0) {
@@ -122,7 +93,7 @@ async function handleUserCellElem(elem: HTMLElement) {
   const userLink = userLinkName.closest('a[href^="/"]')
   const mentions = elem.querySelectorAll<HTMLAnchorElement>('a[href^="/"]')
   mentions.forEach(ln => {
-    const identifier = extractUserIdentifierFromLink(ln)
+    const identifier = twitterIdentifier(ln)
     if (!identifier) {
       return
     }
@@ -153,7 +124,7 @@ async function handleTweetElem(elem: HTMLElement) {
   const userLinks = elem.querySelectorAll<HTMLAnchorElement>('a[href^="/"]')
   userLinks.forEach(ln => {
     const isAuthor = permalink && ln.isSameNode(permalink)
-    const identifier = extractUserIdentifierFromLink(ln)
+    const identifier = twitterIdentifier(ln)
     if (!identifier) {
       return
     }
@@ -189,7 +160,7 @@ async function handleUserNameElem(elem: HTMLElement) {
 async function handleUserDescriptionElem(elem: HTMLElement) {
   const mentions = elem.querySelectorAll<HTMLAnchorElement>('a[href^="/"]')
   mentions.forEach(ln => {
-    const identifier = extractUserIdentifierFromLink(ln)
+    const identifier = twitterIdentifier(ln)
     if (!identifier) {
       return
     }
@@ -206,7 +177,7 @@ async function handleHoverLayer(elem: HTMLElement) {
     if (pathname.endsWith('/following') || pathname.endsWith('/followers')) {
       return
     }
-    const identifier = extractUserIdentifierFromLink(ln)
+    const identifier = twitterIdentifier(ln)
     if (!identifier) {
       return
     }
@@ -214,20 +185,6 @@ async function handleHoverLayer(elem: HTMLElement) {
       indicateElement(ln, identifier, results)
     })
   })
-}
-
-function extractUserIdentifierFromLink(link: HTMLAnchorElement): string | null {
-  const pattern = /^\/([0-9a-z_]{1,15})/i
-  const maybeUserNameMatch = pattern.exec(link.pathname)
-  if (!maybeUserNameMatch) {
-    return null
-  }
-  const maybeUserName = maybeUserNameMatch[1]!
-  if (invalidUserNames.includes(maybeUserName)) {
-    return null
-  }
-  const loweredUserName = maybeUserName.toLowerCase()
-  return `twitter.com/${loweredUserName}`
 }
 
 function isDark(colorThemeTag: HTMLMetaElement) {
