@@ -125,7 +125,7 @@ async function handleTweetElem(elem: HTMLElement) {
 }
 
 async function handleUserNameElem(elem: HTMLElement) {
-  const actualUserNameElem = elem.querySelector('div[dir=ltr] > span')!
+  const actualUserNameElem = elem.querySelector('[dir=ltr] > span')!
   const userName = actualUserNameElem.textContent!.replace(/^@/, '')
   const identifier = 'twitter.com/' + userName.toLowerCase()
   Filtering.identify(identifier).then(results => {
