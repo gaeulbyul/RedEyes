@@ -75,7 +75,12 @@ function extractURL(elem: HTMLAnchorElement): URL | null {
   try {
     const hiddenPrefix = elem.childNodes[0].textContent!.trim()
     const visible = elem.childNodes[1].textContent!.trim()
-    const hiddenSuffix = elem.childNodes[2].textContent!.trim()
+    // suffix는 없을 수 있더라.
+    let hiddenSuffix = ''
+    const suffixNode = elem.childNodes[2]
+    if (suffixNode) {
+      hiddenSuffix = suffixNode.textContent!.trim()
+    }
     return new URL(hiddenPrefix + visible + hiddenSuffix)
   } catch (err) {
     console.log('warning: failed to convert to url string', elem, err)
@@ -100,6 +105,8 @@ async function handleExternalLink(elem: HTMLAnchorElement) {
     case realUrl.hostname.endsWith('.wikipedia.org'):
       identifier = wikipediaIdentifier(realUrl)
       break
+    default:
+      identifier = realUrl.hostname
   }
   if (!identifier) {
     return
@@ -141,6 +148,9 @@ async function handleUserCellElem(elem: HTMLElement) {
       }
     })
   })
+  const externalLinkSelector = 'a[href^="https://t.co/"][rel~=noopener]'
+  const externalLinks = elem.querySelectorAll<HTMLAnchorElement>(externalLinkSelector)
+  externalLinks.forEach(handleExternalLink)
 }
 
 async function handleTweetElem(elem: HTMLElement) {
