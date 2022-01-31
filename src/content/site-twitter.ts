@@ -109,8 +109,20 @@ async function handleExternalLink(elem: HTMLAnchorElement) {
   })
 }
 
+async function handleTypeaheadUserElem(elem: HTMLElement) {
+  const userNameElem = elem.querySelector('[dir=ltr] > span')
+  const userName = userNameElem!.textContent!.replace(/^@/, '')
+  const identifier = `twitter.com/${userName.toLowerCase()}`
+  Filtering.identify(identifier).then(results => {
+    indicateElement(elem, identifier, results)
+  })
+}
+
 async function handleUserCellElem(elem: HTMLElement) {
-  const userLinkName = elem.querySelector<HTMLAnchorElement>('a[href^="/"] div[dir=ltr] > span')!
+  if (elem.matches('[data-testid=typeaheadRecentSearchesItem] > [data-testid=UserCell]')) {
+    return handleTypeaheadUserElem(elem)
+  }
+  const userLinkName = elem.querySelector<HTMLAnchorElement>('a[href^="/"] [dir=ltr] > span')!
   const userLink = userLinkName.closest('a[href^="/"]')
   const mentions = elem.querySelectorAll<HTMLAnchorElement>('a[href^="/"]')
   mentions.forEach(ln => {
@@ -260,10 +272,12 @@ function main() {
       const userCellElems = collectElementsBySelector(elem, 'div[data-testid=UserCell]')
       userCellElems.forEach(handleUserCellElem)
       // username in profile
-      const userNameElems = collectElementsBySelector(elem, 'div[data-testid=UserName')
+      const userNameElems = collectElementsBySelector(elem, 'div[data-testid=UserName]')
       userNameElems.forEach(handleUserNameElem)
       const userDescriptionElems = collectElementsBySelector(elem, 'div[data-testid=UserDescription]')
       userDescriptionElems.forEach(handleUserDescriptionElem)
+      const typeaheadUserElems = collectElementsBySelector(elem, 'div[data-testid=TypeaheadUser]')
+      typeaheadUserElems.forEach(handleTypeaheadUserElem)
       const layers = document.getElementById('layers')
       if (layers) {
         handleHoverLayer(layers)
