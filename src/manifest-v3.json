@@ -30,6 +30,12 @@
       "matches": ["https://twitter.com/*", "https://mobile.twitter.com/*"],
       "css": ["content/redeyes-style.css", "content/twitter.css"],
       "js": ["bundled/site_twitter.bun.js"]
+    },
+    {
+      "matches": ["*://*/*"],
+      "exclude_matches": ["https://twitter.com/*", "https://mobile.twitter.com/*"],
+      "css": ["content/redeyes-style.css"],
+      "js": ["bundled/site_generic.bun.js"]
     }
   ],
 

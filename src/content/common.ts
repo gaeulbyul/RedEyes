@@ -8,6 +8,16 @@ export function* getAddedElementsFromMutations(mutations: MutationRecord[]) {
   }
 }
 
+export function collectElementsBySelector<T extends HTMLElement = HTMLElement>(rootElem: HTMLElement, selector: string): T[] {
+  const result: T[] = []
+  if (rootElem.matches(selector)) {
+    result.push(rootElem as T)
+  }
+  result.push(...rootElem.querySelectorAll<T>(selector))
+  return result
+}
+
+
 export function maybeURL(url: string | URLLike): URL | null {
   try {
     return new URL(url.toString())

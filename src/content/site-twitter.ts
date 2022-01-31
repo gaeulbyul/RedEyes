@@ -1,7 +1,7 @@
 import * as Filtering from '../lib/filtering'
 import { initColors, toggleDarkMode } from './colors'
-import { getAddedElementsFromMutations } from './common'
-import { wikipediaIdentifier } from './identifier'
+import { getAddedElementsFromMutations, collectElementsBySelector } from './common'
+import { getIdentifier } from './identifier'
 
 const invalidUserNames = Object.freeze([
   'about',
@@ -36,10 +36,7 @@ function indicateElement(elem: HTMLElement, identifier: string, results: Matched
   if (results.length <= 0) {
     return
   }
-  const matchedFilter = results[0]
-  if (!matchedFilter) {
-    return
-  }
+  const matchedFilter = results[0]!
   let className = ''
   let tooltip = ''
   if (matchedFilter.group == 'friendly') {
@@ -99,15 +96,7 @@ async function handleExternalLink(elem: HTMLAnchorElement) {
   if (!realUrl) {
     return
   }
-  let identifier = ''
-  switch (true) {
-    case realUrl.hostname == 'wikipedia.org':
-    case realUrl.hostname.endsWith('.wikipedia.org'):
-      identifier = wikipediaIdentifier(realUrl)
-      break
-    default:
-      identifier = realUrl.hostname
-  }
+  const identifier = getIdentifier(elem)
   if (!identifier) {
     return
   }
@@ -255,15 +244,6 @@ function handleDarkMode() {
     attributes: true,
   })
   toggleDarkMode(isDark(colorThemeTag))
-}
-
-function collectElementsBySelector(rootElem: HTMLElement, selector: string): HTMLElement[] {
-  const result: HTMLElement[] = []
-  if (rootElem.matches(selector)) {
-    result.push(rootElem)
-  }
-  result.push(...rootElem.querySelectorAll<HTMLElement>(selector))
-  return result
 }
 
 function main() {
