@@ -3,6 +3,8 @@ import { getAddedElementsFromMutations, collectElementsBySelector } from './comm
 import { initColors, /* toggleDarkMode */ } from './colors'
 import { getIdentifier } from './identifier'
 
+const cachedMatchResultsMap = new Map<string, MatchedFilter[]>()
+
 function indicateElement(elem: HTMLElement, identifier: string, results: MatchedFilter[]) {
   if (results.length <= 0) {
     return
@@ -44,9 +46,18 @@ async function handleLink(elem: HTMLAnchorElement) {
   if (!identifier) {
     return
   }
-  Filtering.identify(identifier).then(results => {
-    indicateElement(elem, identifier, results)
-  })
+  if (identifier.includes('/')) {
+    console.log(identifier)
+  }
+  const cachedResults = cachedMatchResultsMap.get(identifier)
+  if (cachedResults) {
+    indicateElement(elem, identifier, cachedResults)
+  } else {
+    Filtering.identify(identifier).then(results => {
+      cachedMatchResultsMap.set(identifier, results)
+      indicateElement(elem, identifier, results)
+    })
+  }
 }
 
 function main() {

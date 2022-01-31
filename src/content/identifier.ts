@@ -16,6 +16,8 @@ export function getIdentifier(url: string | URLLike): string | null {
     case hostname == 'mobile.twitter.com':
       return twitterIdentifier(url)
       break
+    case hostname == 'facebook.com':
+      return facebookIdentifier(url)
     default:
       return hostname
   }
@@ -28,6 +30,9 @@ function getHostname(url: URLLike) {
   // ex. https://en.wikipedia.org./wiki/Foobar
   if (hostname.endsWith('.')) {
     hostname = hostname.replace(/\.$/, '')
+  }
+  if (hostname.startsWith('www.')) {
+    hostname = hostname.replace(/^www\./i, '')
   }
   return hostname
 }
@@ -78,4 +83,16 @@ export function twitterIdentifier(url: URLLike): string | null {
   }
   const loweredUserName = maybeUserName.toLowerCase()
   return `twitter.com/${loweredUserName}`
+}
+
+function facebookIdentifier(url: URLLike): string | null {
+  // pattern 참고: https://www.facebook.com/help/105399436216001
+  const pattern = /^\/([0-9a-z.]+)\b/i
+  const maybeUserNameMatch = pattern.exec(url.pathname)
+  if (!maybeUserNameMatch) {
+    return null
+  }
+  const maybeUserName = maybeUserNameMatch[1]!
+  const loweredUserName = maybeUserName.toLowerCase()
+  return `facebook.com/${loweredUserName}`
 }
