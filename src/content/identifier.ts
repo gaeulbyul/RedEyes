@@ -20,6 +20,8 @@ export function getIdentifier(url: string | URLLike): string | null {
     case hostname == 'reddit.com':
     case hostname.endsWith('.reddit.com'):
       return redditIdentifier(url)
+    case hostname == 'medium.com':
+      return mediumIdentifier(url)
     default:
       return hostname
   }
@@ -109,4 +111,13 @@ function redditIdentifier(url: URLLike): string | null {
   const identifierId = maybePatternMatch[2]!
   const loweredId = identifierId.toLowerCase()
   return `reddit.com/${identifierType}/${loweredId}`
+}
+
+function mediumIdentifier(url: URLLike): string | null {
+  const firstToken = url.pathname.split('/')[1]!
+  if (!firstToken) {
+    return null
+  }
+  const loweredToken = firstToken.toLowerCase()
+  return `medium.com/${loweredToken}`
 }
