@@ -8,7 +8,10 @@ export function* getAddedElementsFromMutations(mutations: MutationRecord[]) {
   }
 }
 
-export function collectElementsBySelector<T extends HTMLElement = HTMLElement>(rootElem: HTMLElement, selector: string): T[] {
+export function collectElementsBySelector<T extends HTMLElement = HTMLElement>(
+  rootElem: HTMLElement,
+  selector: string,
+): T[] {
   const result: T[] = []
   if (rootElem.matches(selector)) {
     result.push(rootElem as T)
@@ -16,7 +19,6 @@ export function collectElementsBySelector<T extends HTMLElement = HTMLElement>(r
   result.push(...rootElem.querySelectorAll<T>(selector))
   return result
 }
-
 
 export function maybeURL(url: string | URLLike): URL | null {
   try {

@@ -1,4 +1,3 @@
-
 export function getIdentifier(url: string | URLLike): string | null {
   if (typeof url == 'string') {
     return getIdentifier(new URL(url))
@@ -18,6 +17,9 @@ export function getIdentifier(url: string | URLLike): string | null {
       break
     case hostname == 'facebook.com':
       return facebookIdentifier(url)
+    case hostname == 'reddit.com':
+    case hostname.endsWith('.reddit.com'):
+      return redditIdentifier(url)
     default:
       return hostname
   }
@@ -95,4 +97,16 @@ function facebookIdentifier(url: URLLike): string | null {
   const maybeUserName = maybeUserNameMatch[1]!
   const loweredUserName = maybeUserName.toLowerCase()
   return `facebook.com/${loweredUserName}`
+}
+
+function redditIdentifier(url: URLLike): string | null {
+  const pattern = /^\/(r|user)\/([0-9A-Za-z_]{1,20})/
+  const maybePatternMatch = pattern.exec(url.pathname)
+  if (!maybePatternMatch) {
+    return null
+  }
+  const identifierType = maybePatternMatch[1]!
+  const identifierId = maybePatternMatch[2]!
+  const loweredId = identifierId.toLowerCase()
+  return `reddit.com/${identifierType}/${loweredId}`
 }

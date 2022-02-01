@@ -67,7 +67,7 @@ async function handleExternalLink(elem: HTMLAnchorElement) {
   if (!realUrl) {
     return
   }
-  const identifier = getIdentifier(elem)
+  const identifier = getIdentifier(realUrl)
   if (!identifier) {
     return
   }
