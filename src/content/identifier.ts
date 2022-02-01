@@ -7,6 +7,8 @@ export function getIdentifier(url: string | URLLike): string | null {
   switch (true) {
     case hostname == 'wikipedia.org':
     case hostname.endsWith('.wikipedia.org'):
+    // Shinigami-Eyes에선 rationalwiki의 항목도 wikipedia.org의 항목처럼 취급하더라.
+    case hostname == 'rationalwiki.org':
       if (pathname.startsWith('/wiki/')) {
         return wikipediaIdentifier(url)
       }
