@@ -70,6 +70,6 @@ task('srczip', async () => {
 })
 
 task('default', 'build')
-// task('clean-build', series('clean', 'build'))
+task('clean-build', series('clean', 'build'))
 task('dist', parallel('zip', 'srczip'))
 task('all', series('default', 'dist'))
