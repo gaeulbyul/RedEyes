@@ -4,6 +4,11 @@ export function getIdentifier(url: string | URLLike): string | null {
   }
   const hostname = getHostname(url)
   const { pathname } = url
+  // 유튜브에서 동영상 설명 내 링크는 실제 URL 대신 youtube.com/redirect가 걸려있더라.
+  if (hostname == 'youtube.com' && pathname == '/redirect') {
+    const realURL = getRealURLFromYoutubeRedirect(url)
+    return getIdentifier(realURL)
+  }
   switch (true) {
     case hostname == 'wikipedia.org':
     case hostname.endsWith('.wikipedia.org'):
@@ -16,7 +21,6 @@ export function getIdentifier(url: string | URLLike): string | null {
     case hostname == 'twitter.com':
     case hostname == 'mobile.twitter.com':
       return twitterIdentifier(url)
-      break
     case hostname == 'facebook.com':
       return facebookIdentifier(url)
     case hostname == 'reddit.com':
@@ -24,6 +28,8 @@ export function getIdentifier(url: string | URLLike): string | null {
       return redditIdentifier(url)
     case hostname == 'medium.com':
       return mediumIdentifier(url)
+    case hostname == 'youtube.com':
+      return youtubeIdentifier(url)
     default:
       return hostname
   }
@@ -41,6 +47,16 @@ function getHostname(url: URLLike) {
     hostname = hostname.replace(/^www\./i, '')
   }
   return hostname
+}
+
+function getRealURLFromYoutubeRedirect(urllike: URLLike): URL {
+  const url = new URL(urllike.href)
+  const qValue = url.searchParams.get('q')!
+  const result = new URL(qValue)
+  if (result.hostname.endsWith('youtube.com') && result.pathname == '/redirect') {
+    throw new Error('???')
+  }
+  return result
 }
 
 function wikipediaIdentifier(url: URLLike) {
@@ -122,4 +138,16 @@ function mediumIdentifier(url: URLLike): string | null {
   }
   const loweredToken = firstToken.toLowerCase()
   return `medium.com/${loweredToken}`
+}
+
+function youtubeIdentifier(url: URLLike): string | null {
+  const pattern = /^\/(c|channel|user)\/([0-9A-Za-z_-]+)/
+  const matched = pattern.exec(url.pathname)
+  if (!matched) {
+    return null
+  }
+  const identifierType = matched[1]!
+  const identifierId = matched[2]!
+  const loweredId = identifierId.toLowerCase()
+  return `youtube.com/${identifierType}/${loweredId}`
 }
