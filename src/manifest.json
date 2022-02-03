@@ -15,7 +15,7 @@
   "permissions": ["*://*/*", "storage", "unlimitedStorage", "contextMenus"],
 
   "background": {
-    "service_worker": "bundled/background.bun.js"
+    "scripts": ["bundled/background.bun.js"]
   },
 
   "options_ui": {
