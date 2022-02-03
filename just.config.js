@@ -32,7 +32,8 @@ task('build', async () => {
       stopOnErr: true,
       filter(filename) {
         switch (true) {
-          case /\.bs\.js$/i.test(filename):
+          case /\.tsx?$/i.test(filename):
+          case /\.svelte$/i.test(filename):
             return false
           default:
             return true
