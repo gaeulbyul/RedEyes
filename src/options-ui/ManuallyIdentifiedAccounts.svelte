@@ -6,7 +6,7 @@
 
   let manuallyIdentified: RedEyesManuallyIdentifiedEntries = {}
   // let initialLoading = true
-  
+
   const validGroup: RedEyesFilterGroup[] = ['phobic', 'friendly', 'neutral']
 
   function handleRemoveButtonClick(_event: MouseEvent, identifier: string) {
@@ -66,7 +66,7 @@
             </tr>
           </thead>
           <tbody>
-            {#each Object.entries(manuallyIdentified) as [identifier, group]}
+            {#each Object.entries(manuallyIdentified) as [identifier, group] (identifier)}
               <tr>
                 <td>{identifier}</td>
                 <td>

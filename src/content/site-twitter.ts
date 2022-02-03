@@ -1,7 +1,7 @@
 import * as Filtering from '../lib/filtering'
 import { initColors, toggleDarkMode } from './colors'
-import { getAddedElementsFromMutations, collectElementsBySelector } from './common'
-import { getIdentifier, twitterIdentifier } from './identifier'
+import { getAddedElementsFromMutations, collectElementsBySelector } from '../lib/common'
+import { getIdentifier, twitterIdentifier } from '../lib/identifier'
 
 function indicateElement(elem: HTMLElement, identifier: string, results: MatchedFilter[]) {
   if (results.length <= 0) {

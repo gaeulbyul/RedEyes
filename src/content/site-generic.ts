@@ -1,7 +1,7 @@
 import * as Filtering from '../lib/filtering'
 import { initColors /* toggleDarkMode */} from './colors'
-import { getAddedElementsFromMutations, collectElementsBySelector } from './common'
-import { getIdentifier } from './identifier'
+import { getAddedElementsFromMutations, collectElementsBySelector } from '../lib/common'
+import { getIdentifier } from '../lib/identifier'
 
 const cachedMatchResultsMap = new Map<string, MatchedFilter[]>()
 

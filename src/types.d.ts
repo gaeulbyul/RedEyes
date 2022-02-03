@@ -40,14 +40,3 @@ interface MatchedFilter {
 }
 
 type URLLike = URL | Location | HTMLAnchorElement
-
-type RedEyesSupportSite = 
-  // | 'facebook.com'
-  // | 'tumblr.com'
-  // | 'rationalwiki.org'
-  | 'wikipedia.org'
-  | 'twitter.com'
-  // | 'reddit.com'
-  // | 'medium.com'
-  // | 'disqus.com'
-  // | 'youtube.com'
