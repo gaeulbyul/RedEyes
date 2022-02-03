@@ -6,7 +6,7 @@ export const defaultStorage = Object.freeze<RedEyesStorage>({
   filters: [],
   filterDatas: Object.create(null),
   manuallyIdentified: Object.create(null),
-  colors: Object.assign(Object.create(null), colorPresets[0]),
+  colors: Object.assign(Object.create(null), colorPresets['preset 01']),
 })
 
 type RedEyesStorageOnly = {
