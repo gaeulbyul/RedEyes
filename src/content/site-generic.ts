@@ -2,6 +2,7 @@ import * as Filtering from '../lib/filtering'
 import { initColors /* toggleDarkMode */} from './colors'
 import { getAddedElementsFromMutations, collectElementsBySelector } from '../lib/common'
 import { getIdentifier } from '../lib/identifier'
+import { listenExtensionMessage } from './content-extension-message-handler'
 
 const cachedMatchResultsMap = new Map<string, MatchedFilter[]>()
 
@@ -61,8 +62,9 @@ async function handleLink(elem: HTMLAnchorElement) {
 }
 
 function main() {
-  const selector = 'a[href]:not([href^="#"])'
+  listenExtensionMessage()
   initColors()
+  const selector = 'a[href]:not([href^="#"])'
   const touched = new WeakSet()
   document.querySelectorAll<HTMLAnchorElement>(selector).forEach(link => {
     if (touched.has(link)) {

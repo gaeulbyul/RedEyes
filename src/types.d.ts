@@ -40,3 +40,13 @@ interface MatchedFilter {
 }
 
 type URLLike = URL | Location | HTMLAnchorElement
+
+declare namespace REMessageToContent {
+  interface Alert {
+    messageTo: 'content'
+    messageType: 'Alert'
+    text: string
+  }
+}
+
+type RedEyesMessageToContent = REMessageToContent.Alert

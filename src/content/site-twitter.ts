@@ -2,6 +2,7 @@ import * as Filtering from '../lib/filtering'
 import { initColors, toggleDarkMode } from './colors'
 import { getAddedElementsFromMutations, collectElementsBySelector } from '../lib/common'
 import { getIdentifier, twitterIdentifier } from '../lib/identifier'
+import { listenExtensionMessage } from './content-extension-message-handler'
 
 function indicateElement(elem: HTMLElement, identifier: string, results: MatchedFilter[]) {
   if (results.length <= 0) {
@@ -206,6 +207,7 @@ function handleDarkMode() {
 function main() {
   handleDarkMode()
   initColors()
+  listenExtensionMessage()
   const touched = new WeakSet()
   const elemObserver = new MutationObserver(mutations => {
     for (const elem of getAddedElementsFromMutations(mutations)) {

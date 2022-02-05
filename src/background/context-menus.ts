@@ -16,12 +16,7 @@ const targetUrlPatterns = [
   'https://rationalwiki.org/wiki/*',
 ]
 
-async function manuallyIdentify(urlstr: string, group: RedEyesFilterGroup) {
-  const identifier = getIdentifier(urlstr)
-  if (!identifier) {
-    // TODO: 적절한 alert메시지?
-    return
-  }
+async function manuallyIdentify(identifier: string, group: RedEyesFilterGroup) {
   const { manuallyIdentified } = await RedEyesStorage.loadLocalStorageOnly('manuallyIdentified')
   manuallyIdentified[identifier] = group
   return RedEyesStorage.saveLocalStorage({
@@ -29,20 +24,32 @@ async function manuallyIdentify(urlstr: string, group: RedEyesFilterGroup) {
   })
 }
 
-browser.contextMenus.onClicked.addListener((clickInfo, _tab) => {
+browser.contextMenus.onClicked.addListener((clickInfo, tab) => {
   const { linkUrl } = clickInfo
   if (!linkUrl) {
     return
   }
+  const identifier = getIdentifier(linkUrl)
+  if (!identifier) {
+    if (tab) {
+      const msg: REMessageToContent.Alert = {
+        messageTo: 'content',
+        messageType: 'Alert',
+        text: `RedEyes can't identify such url: "${linkUrl}"`
+      }
+      browser.tabs.sendMessage(tab.id!, msg)
+    }
+    return
+  }
   switch (clickInfo.menuItemId) {
     case 'manually-identify-as-phobic':
-      manuallyIdentify(linkUrl, 'phobic')
+      manuallyIdentify(identifier, 'phobic')
       break
     case 'manually-identify-as-friendly':
-      manuallyIdentify(linkUrl, 'friendly')
+      manuallyIdentify(identifier, 'friendly')
       break
     case 'manually-identify-as-neutral':
-      manuallyIdentify(linkUrl, 'neutral')
+      manuallyIdentify(identifier, 'neutral')
       break
   }
 })
