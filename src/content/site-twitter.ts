@@ -3,42 +3,7 @@ import { initColors, toggleDarkMode } from './colors'
 import { getAddedElementsFromMutations, collectElementsBySelector } from '../lib/common'
 import { getIdentifier, twitterIdentifier } from '../lib/identifier'
 import { listenExtensionMessage } from './content-extension-message-handler'
-
-function indicateElement(elem: HTMLElement, identifier: string, results: MatchedFilter[]) {
-  if (results.length <= 0) {
-    return
-  }
-  const matchedFilter = results[0]!
-  let className = ''
-  let tooltip = ''
-  if (matchedFilter.group == 'friendly') {
-    className = 'redeyes-friendly'
-    tooltip = 'this user is in the friendly!'
-  } else if (matchedFilter.group == 'phobic') {
-    className = 'redeyes-phobic'
-    tooltip = 'this user is in the phobic!'
-  } else if (matchedFilter.group == 'neutral') {
-    className = 'redeyes-neutral'
-    tooltip = 'this user is neither phobic nor friendly!'
-  }
-  tooltip += '\n' + JSON.stringify(
-    {
-      identifier,
-      name: matchedFilter.name,
-      group: matchedFilter.group,
-    },
-    null,
-    2,
-  )
-  elem.classList.add(className)
-  elem.title = tooltip
-  elem.setAttribute('data-redeyes', matchedFilter.group)
-  const spans = elem.querySelectorAll('span')
-  spans.forEach(span => {
-    span.classList.add(className)
-    span.setAttribute('data-redeyes', matchedFilter.group)
-  })
-}
+import { indicateElement } from './indicator'
 
 function extractURL(elem: HTMLAnchorElement): URL | null {
   try {
