@@ -1,5 +1,5 @@
 // TODO: rename as harmful/friendly
-type RedEyesFilterGroup = 'phobic' | 'friendly' | 'neutral'
+type RedEyesFilterGroup = 'toxic' | 'friendly' | 'neutral'
 
 interface RedEyesFilter {
   id: string
@@ -13,8 +13,8 @@ type RedEyesFilterDatas = Record<string, number[]>
 type RedEyesManuallyIdentifiedEntries = Record<string, RedEyesFilterGroup>
 
 interface RedEyesColors {
-  phobicLight: string
-  phobicDark: string
+  toxicLight: string
+  toxicDark: string
   friendlyLight: string
   friendlyDark: string
 }

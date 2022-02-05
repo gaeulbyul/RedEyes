@@ -46,9 +46,9 @@
             <thead>
               <tr>
                 <th></th>
-                <th>Phobic Light</th>
+                <th>Toxic Light</th>
                 <th>Friendly Light</th>
-                <th>Phobic Dark</th>
+                <th>Toxic Dark</th>
                 <th>Friendly Dark</th>
               </tr>
             </thead>
@@ -57,10 +57,10 @@
                 <td>Current:</td>
                 <td>
                   <input type="color" class="colorpicker"
-                  bind:value={currentColors.phobicLight}
+                  bind:value={currentColors.toxicLight}
                   on:change={onColorChanged}
-                  title={currentColors.phobicLight}
-                  style="border-color: {currentColors.phobicLight}"
+                  title={currentColors.toxicLight}
+                  style="border-color: {currentColors.toxicLight}"
                   />
                 </td>
                 <td>
@@ -73,10 +73,10 @@
                 </td>
                 <td class="dark">
                   <input type="color" class="colorpicker"
-                  bind:value={currentColors.phobicDark}
+                  bind:value={currentColors.toxicDark}
                   on:change={onColorChanged}
-                  title={currentColors.phobicDark}
-                  style="border-color: {currentColors.phobicDark}"
+                  title={currentColors.toxicDark}
+                  style="border-color: {currentColors.toxicDark}"
                   />
                 </td>
                 <td class="dark">
@@ -98,13 +98,13 @@
                     on:click|preventDefault={event => onPresetApplyButtonClicked(event, preset)} />
                   </td>
                   <td>
-                    <div class="preset-color-item" style="background-color:{preset.phobicLight}">
+                    <div class="preset-color-item" style="background-color:{preset.toxicLight}">
                   </td>
                   <td>
                     <div class="preset-color-item" style="background-color:{preset.friendlyLight}">
                   </td>
                   <td class="dark">
-                    <div class="preset-color-item" style="background-color:{preset.phobicDark}">
+                    <div class="preset-color-item" style="background-color:{preset.toxicDark}">
                   </td>
                   <td class="dark">
                     <div class="preset-color-item" style="background-color:{preset.friendlyDark}">

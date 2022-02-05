@@ -6,7 +6,7 @@
 
   const initialDraftFilter = {
     name: '',
-    group: 'phobic',
+    group: 'toxic',
   }
 
   let draftFilterFileInput: HTMLInputElement,
@@ -15,7 +15,7 @@
     showAddingIndicator = false,
     draftFilter = {
       name: '',
-      group: 'phobic',
+      group: 'toxic',
     }
 
   function handleRemoveButtonClick(_event: Event, item: RedEyesFilter) {
@@ -180,7 +180,7 @@
           Group:
           <br />
           <select name="filter-group" required bind:value={draftFilter.group}>
-            <option value="phobic">Phobic</option>
+            <option value="toxic">Toxic</option>
             <option value="friendly">Friendly</option>
           </select>
         </label>

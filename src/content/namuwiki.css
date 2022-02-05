@@ -1,11 +1,11 @@
 @charset "utf-8";
 
-.redeyes-phobic {
-    outline: 1px solid var(--redeyes-var-phobic) !important;
+.redeyes-toxic {
+    outline: 1px solid var(--redeyes-var-toxic) !important;
 }
 
-.redeyes-phobic.wiki-link-external::before {
-    background-color: var(--redeyes-var-phobic) !important;
+.redeyes-toxic.wiki-link-external::before {
+    background-color: var(--redeyes-var-toxic) !important;
 }
 
 .redeyes-friendly {

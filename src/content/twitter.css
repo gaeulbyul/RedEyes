@@ -1,8 +1,8 @@
 @charset "utf-8";
 
-[data-redeyes=phobic]
+[data-redeyes=toxic]
 img[src*="twimg.com/emoji/"] {
-    background-color: var(--redeyes-var-phobic);
+    background-color: var(--redeyes-var-toxic);
 }
 
 [data-redeyes=friendly]

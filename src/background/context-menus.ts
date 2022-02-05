@@ -47,9 +47,9 @@ browser.contextMenus.onClicked.addListener((clickInfo, tab) => {
     group: 'neutral',
   }
   switch (clickInfo.menuItemId) {
-    case 'manually-identify-as-phobic':
-      manuallyIdentify(identifier, 'phobic')
-      browser.tabs.sendMessage(tabId, { ...repaintMsg, group: 'phobic' })
+    case 'manually-identify-as-toxic':
+      manuallyIdentify(identifier, 'toxic')
+      browser.tabs.sendMessage(tabId, { ...repaintMsg, group: 'toxic' })
       break
     case 'manually-identify-as-friendly':
       manuallyIdentify(identifier, 'friendly')
@@ -75,9 +75,9 @@ export async function initializeContextMenus() {
   browser.contextMenus.create({
     contexts: ['link'],
     parentId: 'manually-identify-submenus',
-    id: 'manually-identify-as-phobic',
+    id: 'manually-identify-as-toxic',
     targetUrlPatterns,
-    title: '&Phobic',
+    title: '&Toxic',
   })
 
   browser.contextMenus.create({

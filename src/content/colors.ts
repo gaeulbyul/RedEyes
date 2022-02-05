@@ -15,9 +15,9 @@ const currentColorScheme = {
 export function applyColors(colors: RedEyesColors) {
   Object.assign(currentColors, colors)
   const isDark = currentColorScheme.dark
-  const colorForPhobic = isDark ? colors.phobicDark : colors.phobicLight
+  const colorForToxic = isDark ? colors.toxicDark : colors.toxicLight
   const colorForFriendly = isDark ? colors.friendlyDark : colors.friendlyLight
-  document.body.style.setProperty('--redeyes-var-phobic', colorForPhobic)
+  document.body.style.setProperty('--redeyes-var-toxic', colorForToxic)
   document.body.style.setProperty('--redeyes-var-friendly', colorForFriendly)
 }
 

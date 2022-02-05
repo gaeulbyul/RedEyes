@@ -67,7 +67,7 @@ async function handleUserCellElem(elem: HTMLElement) {
       indicateElement(ln, identifier, results)
       if (results.length > 0) {
         const isItself = ln.isSameNode(userLink)
-        const isHarmful = results[0].group === 'phobic'
+        const isHarmful = results[0].group === 'toxic'
         if (isItself && isHarmful) {
           elem.children[0].classList.add('assigned-label-transphobic')
         }
@@ -97,7 +97,7 @@ async function handleTweetElem(elem: HTMLElement) {
     Filtering.identify(identifier).then(results => {
       indicateElement(ln, identifier, results)
       if (results.length > 0) {
-        const isHarmful = results[0].group === 'phobic'
+        const isHarmful = results[0].group === 'toxic'
         if (isAuthor && isHarmful) {
           // article[data-testid=tweet] elem은 class가 바뀌면서
           // assigned-label-transphobic이 날라가더라.

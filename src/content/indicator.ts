@@ -15,8 +15,8 @@ function groupToClassName(group: RedEyesFilterGroup): string {
   switch (group) {
     case 'friendly':
       return 'redeyes-friendly'
-    case 'phobic':
-      return 'redeyes-phobic'
+    case 'toxic':
+      return 'redeyes-toxic'
     case 'neutral':
       return 'redeyes-neutral'
   }

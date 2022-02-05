@@ -7,7 +7,7 @@
   let manuallyIdentified: RedEyesManuallyIdentifiedEntries = {}
   // let initialLoading = true
 
-  const validGroup: RedEyesFilterGroup[] = ['phobic', 'friendly', 'neutral']
+  const validGroup: RedEyesFilterGroup[] = ['toxic', 'friendly', 'neutral']
 
   function handleRemoveButtonClick(_event: MouseEvent, identifier: string) {
     const confirmed = window.confirm(`Are you sure to remove a identifier '${identifier}'?`)
@@ -74,7 +74,7 @@
                     value={group}
                     on:change|preventDefault={event => handleGroupChange(event, identifier)}
                   >
-                    <option value="phobic">Phobic</option>
+                    <option value="toxic">Toxic</option>
                     <option value="friendly">Friendly</option>
                     <option value="neutral">Neutral</option>
                   </select>
