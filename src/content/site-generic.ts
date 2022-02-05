@@ -1,7 +1,7 @@
-import * as Filtering from '../lib/filtering'
-import { initColors /* toggleDarkMode */} from './colors'
 import { getAddedElementsFromMutations, collectElementsBySelector } from '../lib/common'
+import * as Filtering from '../lib/filtering'
 import { getIdentifier } from '../lib/identifier'
+import { initColors /* toggleDarkMode */ } from './colors'
 import { listenExtensionMessage } from './content-extension-message-handler'
 import { indicateElement } from './indicator'
 

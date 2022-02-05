@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill'
-import * as RedEyesStorage from '../lib/storage'
 import { getIdentifier } from '../lib/identifier'
+import * as RedEyesStorage from '../lib/storage'
 
 const targetUrlPatterns = [
   'https://twitter.com/*',
@@ -35,7 +35,7 @@ browser.contextMenus.onClicked.addListener((clickInfo, tab) => {
     const msg: REMessageToContent.Alert = {
       messageTo: 'content',
       messageType: 'Alert',
-      text: `RedEyes can't identify such url: "${linkUrl}"`
+      text: `RedEyes can't identify such url: "${linkUrl}"`,
     }
     browser.tabs.sendMessage(tabId, msg)
     return
@@ -44,7 +44,7 @@ browser.contextMenus.onClicked.addListener((clickInfo, tab) => {
     messageTo: 'content',
     messageType: 'RepaintIdentifier',
     identifier,
-    group: 'neutral'
+    group: 'neutral',
   }
   switch (clickInfo.menuItemId) {
     case 'manually-identify-as-phobic':

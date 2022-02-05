@@ -17,4 +17,3 @@ browser.runtime.onInstalled.addListener(({ reason }) => {
   }
   initStorage()
 })
-

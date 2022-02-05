@@ -47,7 +47,7 @@ declare namespace REMessageToContent {
     messageType: 'Alert'
     text: string
   }
-  
+
   interface RepaintIdentifier {
     messageTo: 'content'
     messageType: 'RepaintIdentifier'
@@ -57,5 +57,5 @@ declare namespace REMessageToContent {
 }
 
 type RedEyesMessageToContent =
-| REMessageToContent.Alert
-| REMessageToContent.RepaintIdentifier
+  | REMessageToContent.Alert
+  | REMessageToContent.RepaintIdentifier
