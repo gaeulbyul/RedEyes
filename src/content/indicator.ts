@@ -22,6 +22,10 @@ function groupToClassName(group: RedEyesFilterGroup): string {
   }
 }
 
+function setIdentifierAttribute(elem: HTMLElement, identifier: string) {
+  elem.setAttribute('data-redeyes-identifier', identifier)
+}
+
 function generateTooltip(identifier: string, filter: MatchedFilter): string {
   let tooltip = '[RedEyes]:\n'
   tooltip += `identifier: "${identifier}"\n`
@@ -31,6 +35,7 @@ function generateTooltip(identifier: string, filter: MatchedFilter): string {
 }
 
 export function indicateElement(elem: HTMLElement, identifier: string, filters: MatchedFilter[]) {
+  setIdentifierAttribute(elem, identifier)
   if (filters.length <= 0) {
     return
   }
@@ -40,4 +45,11 @@ export function indicateElement(elem: HTMLElement, identifier: string, filters: 
     elem.title = tooltip
   }
   paintColorToElement(elem, firstFilter.group)
+}
+
+export function repaintIdentifier(identifier: string, group: RedEyesFilterGroup) {
+  const elems = document.querySelectorAll<HTMLElement>(`[data-redeyes-identifier="${identifier}"]`)
+  elems.forEach(elem => {
+    paintColorToElement(elem, group)
+  })
 }

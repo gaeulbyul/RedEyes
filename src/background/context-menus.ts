@@ -26,30 +26,38 @@ async function manuallyIdentify(identifier: string, group: RedEyesFilterGroup) {
 
 browser.contextMenus.onClicked.addListener((clickInfo, tab) => {
   const { linkUrl } = clickInfo
-  if (!linkUrl) {
+  if (!(linkUrl && tab)) {
     return
   }
+  const tabId = tab.id!
   const identifier = getIdentifier(linkUrl)
   if (!identifier) {
-    if (tab) {
-      const msg: REMessageToContent.Alert = {
-        messageTo: 'content',
-        messageType: 'Alert',
-        text: `RedEyes can't identify such url: "${linkUrl}"`
-      }
-      browser.tabs.sendMessage(tab.id!, msg)
+    const msg: REMessageToContent.Alert = {
+      messageTo: 'content',
+      messageType: 'Alert',
+      text: `RedEyes can't identify such url: "${linkUrl}"`
     }
+    browser.tabs.sendMessage(tabId, msg)
     return
+  }
+  const repaintMsg: REMessageToContent.RepaintIdentifier = {
+    messageTo: 'content',
+    messageType: 'RepaintIdentifier',
+    identifier,
+    group: 'neutral'
   }
   switch (clickInfo.menuItemId) {
     case 'manually-identify-as-phobic':
       manuallyIdentify(identifier, 'phobic')
+      browser.tabs.sendMessage(tabId, { ...repaintMsg, group: 'phobic' })
       break
     case 'manually-identify-as-friendly':
       manuallyIdentify(identifier, 'friendly')
+      browser.tabs.sendMessage(tabId, { ...repaintMsg, group: 'friendly' })
       break
     case 'manually-identify-as-neutral':
       manuallyIdentify(identifier, 'neutral')
+      browser.tabs.sendMessage(tabId, { ...repaintMsg, group: 'neutral' })
       break
   }
 })
