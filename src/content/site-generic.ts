@@ -12,9 +12,6 @@ async function handleLink(elem: HTMLAnchorElement) {
   if (!identifier) {
     return
   }
-  if (identifier.includes('/')) {
-    console.log(identifier)
-  }
   const cachedResults = cachedMatchResultsMap.get(identifier)
   if (cachedResults) {
     indicateElement(elem, identifier, cachedResults)
@@ -24,6 +21,19 @@ async function handleLink(elem: HTMLAnchorElement) {
       indicateElement(elem, identifier, results)
     })
   }
+}
+
+function isContentEditable(elem: HTMLElement): boolean {
+  const { contentEditable } = elem
+  if (!contentEditable) {
+    return false
+  }
+  // https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/contenteditable
+  const validValues = ['true', 'caret', 'events', 'plaintext-only', 'typing']
+  if (validValues.includes(contentEditable)) {
+    return true
+  }
+  return false
 }
 
 function main() {
@@ -40,12 +50,22 @@ function main() {
   })
   const elemObserver = new MutationObserver(mutations => {
     for (const elem of getAddedElementsFromMutations(mutations)) {
-      if (touched.has(elem)) {
-        return
+      // contentEditable 내부에선 무한루프 버그가 발생하는 듯.
+      if (isContentEditable(elem)) {
+        continue
       }
-      touched.add(elem)
       const links = collectElementsBySelector<HTMLAnchorElement>(elem, selector)
-      links.forEach(handleLink)
+      links.forEach(link => {
+        if (touched.has(link)) {
+          return
+        }
+        touched.add(link)
+        const contentEditableElem = link.closest<HTMLElement>('[contenteditable]')
+        if (contentEditableElem && isContentEditable(contentEditableElem)) {
+          return
+        }
+        handleLink(link)
+      })
     }
   })
   elemObserver.observe(document.body, {
