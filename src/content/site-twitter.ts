@@ -1,11 +1,8 @@
-import {
-  getAddedElementsFromMutations,
-  collectElementsBySelector,
-  initIntersectionObserver
-} from './content-common'
 import * as Filtering from '../lib/filtering'
 import { getIdentifier, twitterIdentifier } from '../lib/identifier'
+import { loadLocalStorageOnly } from '../lib/storage'
 import { initColors, toggleDarkMode } from './colors'
+import { getAddedElementsFromMutations, collectElementsBySelector, initIntersectionObserver } from './content-common'
 import { listenExtensionMessage } from './content-extension-message-handler'
 import { indicateElement } from './indicator'
 
@@ -227,4 +224,10 @@ function main() {
   })
 }
 
-main()
+loadLocalStorageOnly('excludedSites').then(({ excludedSites }) => {
+  const { hostname } = location
+  if (excludedSites.includes(hostname)) {
+    return
+  }
+  main()
+}, () => main())

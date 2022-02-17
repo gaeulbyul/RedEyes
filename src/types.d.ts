@@ -24,6 +24,7 @@ interface RedEyesStorage {
   filterDatas: RedEyesFilterDatas
   manuallyIdentified: RedEyesManuallyIdentifiedEntries
   colors: RedEyesColors
+  excludedSites: string[]
 }
 
 type RedEyesStorageChanges = {

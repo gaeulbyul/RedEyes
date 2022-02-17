@@ -1,12 +1,13 @@
+import * as Filtering from '../lib/filtering'
+import { getIdentifier } from '../lib/identifier'
+import { loadLocalStorageOnly } from '../lib/storage'
+import { initColors /* toggleDarkMode */ } from './colors'
 import {
   getAddedElementsFromMutations,
   collectElementsBySelector,
   initIntersectionObserver,
   isContentEditable,
 } from './content-common'
-import * as Filtering from '../lib/filtering'
-import { getIdentifier } from '../lib/identifier'
-import { initColors /* toggleDarkMode */ } from './colors'
 import { listenExtensionMessage } from './content-extension-message-handler'
 import { indicateElement } from './indicator'
 
@@ -40,7 +41,7 @@ function main() {
     .forEach(link => {
       touched.add(link)
       observer.observe(link)
-  })
+    })
   const elemObserver = new MutationObserver(mutations => {
     for (const elem of getAddedElementsFromMutations(mutations)) {
       // contentEditable 내부에선 무한루프 버그가 발생하는 듯.
@@ -55,7 +56,7 @@ function main() {
           const contentEditableElem = link.closest<HTMLElement>('[contenteditable]')
           if (contentEditableElem && isContentEditable(contentEditableElem)) {
             return
-            }
+          }
           observer.observe(link)
         })
     }
@@ -66,4 +67,11 @@ function main() {
   })
 }
 
-main()
+loadLocalStorageOnly('excludedSites').then(({ excludedSites }) => {
+  const { hostname } = location
+  if (excludedSites.includes(hostname)) {
+    console.info('[RedEyes] this website (%s) is in the excluded sites.', hostname)
+    return
+  }
+  main()
+}, () => main())

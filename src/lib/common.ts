@@ -1,4 +1,3 @@
-
 export function maybeURL(url: string | URLLike): URL | null {
   try {
     return new URL(url.toString())
