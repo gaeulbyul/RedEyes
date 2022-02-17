@@ -35,6 +35,9 @@ function generateTooltip(identifier: string, filter: MatchedFilter): string {
 }
 
 export function indicateElement(elem: HTMLElement, identifier: string, filters: MatchedFilter[]) {
+  if (!document.body.contains(elem)) {
+    return
+  }
   setIdentifierAttribute(elem, identifier)
   if (filters.length <= 0) {
     return
