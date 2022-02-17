@@ -1,4 +1,9 @@
-import { getAddedElementsFromMutations, collectElementsBySelector } from '../lib/common'
+import {
+  getAddedElementsFromMutations,
+  collectElementsBySelector,
+  initIntersectionObserver,
+  isContentEditable,
+} from './content-common'
 import * as Filtering from '../lib/filtering'
 import { getIdentifier } from '../lib/identifier'
 import { initColors /* toggleDarkMode */ } from './colors'
@@ -23,30 +28,18 @@ async function handleLink(elem: HTMLAnchorElement) {
   }
 }
 
-function isContentEditable(elem: HTMLElement): boolean {
-  const { contentEditable } = elem
-  if (!contentEditable) {
-    return false
-  }
-  // https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/contenteditable
-  const validValues = ['true', 'caret', 'events', 'plaintext-only', 'typing']
-  if (validValues.includes(contentEditable)) {
-    return true
-  }
-  return false
-}
-
 function main() {
   listenExtensionMessage()
   initColors()
   const selector = 'a[href]:not([href^="#"])'
   const touched = new WeakSet()
-  document.querySelectorAll<HTMLAnchorElement>(selector).forEach(link => {
-    if (touched.has(link)) {
-      return
-    }
-    touched.add(link)
-    handleLink(link)
+  const observer = initIntersectionObserver(handleLink)
+  Array
+    .from(document.querySelectorAll<HTMLAnchorElement>(selector))
+    .filter(link => !touched.has(link))
+    .forEach(link => {
+      touched.add(link)
+      observer.observe(link)
   })
   const elemObserver = new MutationObserver(mutations => {
     for (const elem of getAddedElementsFromMutations(mutations)) {
@@ -55,17 +48,16 @@ function main() {
         continue
       }
       const links = collectElementsBySelector<HTMLAnchorElement>(elem, selector)
-      links.forEach(link => {
-        if (touched.has(link)) {
-          return
-        }
-        touched.add(link)
-        const contentEditableElem = link.closest<HTMLElement>('[contenteditable]')
-        if (contentEditableElem && isContentEditable(contentEditableElem)) {
-          return
-        }
-        handleLink(link)
-      })
+      links
+        .filter(link => !touched.has(link))
+        .forEach(link => {
+          touched.add(link)
+          const contentEditableElem = link.closest<HTMLElement>('[contenteditable]')
+          if (contentEditableElem && isContentEditable(contentEditableElem)) {
+            return
+            }
+          observer.observe(link)
+        })
     }
   })
   elemObserver.observe(document.body, {

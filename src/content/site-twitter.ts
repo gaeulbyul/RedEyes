@@ -1,4 +1,8 @@
-import { getAddedElementsFromMutations, collectElementsBySelector } from '../lib/common'
+import {
+  getAddedElementsFromMutations,
+  collectElementsBySelector,
+  initIntersectionObserver
+} from './content-common'
 import * as Filtering from '../lib/filtering'
 import { getIdentifier, twitterIdentifier } from '../lib/identifier'
 import { initColors, toggleDarkMode } from './colors'
@@ -169,29 +173,48 @@ function handleDarkMode() {
   toggleDarkMode(isDark(colorThemeTag))
 }
 
+function handleElement(elem: HTMLElement) {
+  const testid = elem.getAttribute('data-testid')!
+  console.debug('testid %s', testid, elem)
+  switch (testid) {
+    case 'tweet':
+      return handleTweetElem(elem)
+    case 'UserCell':
+      return handleUserCellElem(elem)
+    case 'UserName':
+      return handleUserNameElem(elem)
+    case 'UserDescription':
+      return handleUserDescriptionElem(elem)
+    case 'TypeaheadUser':
+      return handleTypeaheadUserElem(elem)
+    default:
+      console.warn('unknown element: ', elem)
+      throw new Error('unreachable')
+  }
+}
+
+const selectors = [
+  'article[data-testid=tweet]',
+  'div[data-testid=UserCell]',
+  'div[data-testid=UserName]',
+  'div[data-testid=UserDescription]',
+  'div[data-testid=TypeaheadUser]',
+].join(',')
+
 function main() {
   handleDarkMode()
   initColors()
   listenExtensionMessage()
+  const observer = initIntersectionObserver(handleElement)
   const touched = new WeakSet()
   const elemObserver = new MutationObserver(mutations => {
     for (const elem of getAddedElementsFromMutations(mutations)) {
       if (touched.has(elem)) {
-        return
+        continue
       }
       touched.add(elem)
-      const tweetElems = collectElementsBySelector(elem, 'article[data-testid=tweet]')
-      tweetElems.forEach(handleTweetElem)
-      // followers, followings, ...
-      const userCellElems = collectElementsBySelector(elem, 'div[data-testid=UserCell]')
-      userCellElems.forEach(handleUserCellElem)
-      // username in profile
-      const userNameElems = collectElementsBySelector(elem, 'div[data-testid=UserName]')
-      userNameElems.forEach(handleUserNameElem)
-      const userDescriptionElems = collectElementsBySelector(elem, 'div[data-testid=UserDescription]')
-      userDescriptionElems.forEach(handleUserDescriptionElem)
-      const typeaheadUserElems = collectElementsBySelector(elem, 'div[data-testid=TypeaheadUser]')
-      typeaheadUserElems.forEach(handleTypeaheadUserElem)
+      const elems = collectElementsBySelector(elem, selectors)
+      elems.forEach(elem => observer.observe(elem))
       const layers = document.getElementById('layers')
       if (layers) {
         handleHoverLayer(layers)
