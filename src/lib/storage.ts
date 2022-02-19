@@ -7,7 +7,10 @@ export const defaultStorage = Object.freeze<RedEyesStorage>({
   filterDatas: Object.create(null),
   manuallyIdentified: Object.create(null),
   colors: Object.assign(Object.create(null), colorPresets['preset 01']),
-  excludedSites: ['example.org'],
+  excludedSites: [
+    'vscode.dev',
+    'github.dev',
+  ],
 })
 
 type RedEyesStorageOnly = {

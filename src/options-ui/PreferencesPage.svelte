@@ -10,7 +10,9 @@
     ...RedEyesStorage.defaultStorage.colors
   }
 
-  let excludedSites: string[] = ['example.org']
+  let excludedSites: string[] = [
+    ...RedEyesStorage.defaultStorage.excludedSites
+  ]
 
   $: excludedSitesAsText = (excludedSites || []).join('\n')
 
