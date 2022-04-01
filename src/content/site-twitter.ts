@@ -8,7 +8,7 @@ import {
   initIntersectionObserver,
 } from './content-common'
 import { listenExtensionMessage } from './content-extension-message-handler'
-import { indicateElement } from './indicator'
+import { indicateElement, removeIndicate } from './indicator'
 
 function extractURL(elem: HTMLAnchorElement): URL | null {
   try {
@@ -183,6 +183,7 @@ function handleElement(elem: HTMLElement) {
     case 'UserCell':
       return handleUserCellElem(elem)
     case 'UserName':
+      detectContentChange(elem)
       return handleUserNameElem(elem)
     case 'UserDescription':
       return handleUserDescriptionElem(elem)
@@ -192,6 +193,21 @@ function handleElement(elem: HTMLElement) {
       console.warn('unknown element: ', elem)
       throw new Error('unreachable')
   }
+}
+
+function detectContentChange(elem: HTMLElement) {
+  const mObserver = new MutationObserver(() => {
+    removeIndicate(elem)
+    handleElement(elem)
+    console.debug('dCC! %o', elem)
+  })
+  mObserver.observe(elem, {
+    subtree: true,
+    childList: true,
+    characterData: true,
+    attributes: true,
+    attributeFilter: ['href', 'src'],
+  })
 }
 
 const selectors = [
