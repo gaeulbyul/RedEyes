@@ -55,7 +55,7 @@ const mv2 = {
   },
   plugins: [],
   resolve: {
-    extensions: [ '.svelte', '.mjs', '.tsx', '.ts', '.jsx', '.js'],
+    extensions: ['.svelte', '.mjs', '.tsx', '.ts', '.jsx', '.js'],
     alias: {
       svelte: path.dirname(require.resolve('svelte/package.json')),
     },

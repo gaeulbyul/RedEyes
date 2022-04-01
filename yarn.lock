@@ -1184,6 +1184,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dprint@npm:^0.24.2":
+  version: 0.24.2
+  resolution: "dprint@npm:0.24.2"
+  bin:
+    dprint: bin.js
+  checksum: 3ceabf123c7e63db756b63d75b459df79542085cfb587695fbf7036e0afeda97770a2af486de15aae64572cd7d2578c70c1afe25529dbb19f4b4620349b94ab3
+  languageName: node
+  linkType: hard
+
 "electron-to-chromium@npm:^1.4.17":
   version: 1.4.31
   resolution: "electron-to-chromium@npm:1.4.31"
@@ -2823,6 +2832,7 @@ __metadata:
     "@types/webextension-polyfill": ^0.8.2
     css-loader: ^6.5.1
     debounce: ^1.2.1
+    dprint: ^0.24.2
     fs-extra: ^10.0.0
     husky: ^7.0.4
     just-scripts: ^1.6.1

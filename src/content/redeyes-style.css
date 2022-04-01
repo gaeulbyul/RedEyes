@@ -1,12 +1,11 @@
 @charset "utf-8";
 
-[data-redeyes=toxic],
+[data-redeyes='toxic'],
 .redeyes-toxic {
-    color: var(--redeyes-var-toxic) !important;
+  color: var(--redeyes-var-toxic) !important;
 }
 
-[data-redeyes=friendly],
+[data-redeyes='friendly'],
 .redeyes-friendly {
-    color: var(--redeyes-var-friendly) !important;
+  color: var(--redeyes-var-friendly) !important;
 }
-

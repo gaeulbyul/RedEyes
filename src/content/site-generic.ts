@@ -1,10 +1,10 @@
 import * as Filtering from '../lib/filtering'
-import { getIdentifier, getHostname } from '../lib/identifier'
+import { getHostname, getIdentifier } from '../lib/identifier'
 import { loadLocalStorageOnly } from '../lib/storage'
 import { initColors /* toggleDarkMode */ } from './colors'
 import {
-  getAddedElementsFromMutations,
   collectElementsBySelector,
+  getAddedElementsFromMutations,
   initIntersectionObserver,
   isContentEditable,
 } from './content-common'

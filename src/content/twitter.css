@@ -1,11 +1,9 @@
 @charset "utf-8";
 
-[data-redeyes=toxic]
-img[src*="twimg.com/emoji/"] {
-    background-color: var(--redeyes-var-toxic);
+[data-redeyes='toxic'] img[src*='twimg.com/emoji/'] {
+  background-color: var(--redeyes-var-toxic);
 }
 
-[data-redeyes=friendly]
-img[src*="twimg.com/emoji/"] {
-    background-color: var(--redeyes-var-friendly);
+[data-redeyes='friendly'] img[src*='twimg.com/emoji/'] {
+  background-color: var(--redeyes-var-friendly);
 }

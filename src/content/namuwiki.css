@@ -1,17 +1,17 @@
 @charset "utf-8";
 
 .redeyes-toxic {
-    outline: 1px solid var(--redeyes-var-toxic) !important;
+  outline: 1px solid var(--redeyes-var-toxic) !important;
 }
 
 .redeyes-toxic.wiki-link-external::before {
-    background-color: var(--redeyes-var-toxic) !important;
+  background-color: var(--redeyes-var-toxic) !important;
 }
 
 .redeyes-friendly {
-    outline: 1px solid var(--redeyes-var-friendly) !important;
+  outline: 1px solid var(--redeyes-var-friendly) !important;
 }
 
 .redeyes-friendly.wiki-link-external::before {
-    background-color: var(--redeyes-var-friendly) !important;
+  background-color: var(--redeyes-var-friendly) !important;
 }

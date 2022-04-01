@@ -23,7 +23,7 @@ export async function loadLocalStorage(): Promise<RedEyesStorage> {
 }
 
 export async function loadLocalStorageOnly(
-  key: keyof RedEyesStorage | Array<keyof RedEyesStorage>
+  key: keyof RedEyesStorage | Array<keyof RedEyesStorage>,
 ): Promise<RedEyesStorageOnly> {
   const storage = await browser.storage.local.get(key) as any
   const keys = Array.isArray(key) ? key : [key]

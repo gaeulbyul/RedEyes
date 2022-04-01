@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill'
 
-import { loadLocalStorageOnly, defaultStorage } from '../lib/storage'
+import { defaultStorage, loadLocalStorageOnly } from '../lib/storage'
 
 // https://davidwalsh.name/css-variables-javascript
 
