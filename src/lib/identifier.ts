@@ -36,7 +36,7 @@ export function getIdentifier(url: string | URLLike): string | null {
   return null
 }
 
-function getHostname(url: URLLike) {
+export function getHostname(url: URLLike) {
   let { hostname } = url
   // hostname 끝에 마침표가 올 수도 있음
   // ex. https://en.wikipedia.org./wiki/Foobar

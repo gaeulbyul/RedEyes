@@ -1,5 +1,5 @@
 import * as Filtering from '../lib/filtering'
-import { getIdentifier } from '../lib/identifier'
+import { getIdentifier, getHostname } from '../lib/identifier'
 import { loadLocalStorageOnly } from '../lib/storage'
 import { initColors /* toggleDarkMode */ } from './colors'
 import {
@@ -13,9 +13,15 @@ import { indicateElement } from './indicator'
 
 const cachedMatchResultsMap = new Map<string, MatchedFilter[]>()
 
+const host = getHostname(location)
+
 async function handleLink(elem: HTMLAnchorElement) {
   const identifier = getIdentifier(elem)
   if (!identifier) {
+    return
+  }
+
+  if (identifier == host) {
     return
   }
   const cachedResults = cachedMatchResultsMap.get(identifier)
