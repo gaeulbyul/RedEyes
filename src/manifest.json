@@ -30,10 +30,6 @@
       "js": ["bundled/site_twitter.bun.js"]
     },
     {
-      "matches": ["https://namu.wiki/*"],
-      "css": ["content/namuwiki.css"]
-    },
-    {
       "matches": ["*://*/*"],
       "exclude_matches": ["https://twitter.com/*", "https://mobile.twitter.com/*"],
       "css": ["content/redeyes-style.css"],
