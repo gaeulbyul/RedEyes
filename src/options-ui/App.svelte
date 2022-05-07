@@ -43,7 +43,7 @@
     <input
       type="button"
       class="tab"
-      value="M.I."
+      value="Manually Identified"
       class:activated={activatedTab == 'manually-identified'}
       on:click|preventDefault={() => switchTab('manually-identified')}
     />

@@ -55,7 +55,7 @@
 <div>
   <section class="manually-identified-accounts">
     <fieldset>
-      <legend>M.I.:</legend>
+      <legend>Manually Identified:</legend>
       <div class="tablewrapper">
         <table class="zebra radius">
           <thead>
@@ -68,7 +68,9 @@
           <tbody>
             {#each Object.entries(manuallyIdentified) as [identifier, group] (identifier)}
               <tr>
-                <td>{identifier}</td>
+                <td class="identifier-cell" title={identifier}>
+                  {identifier}
+                </td>
                 <td>
                   <select
                     value={group}
@@ -87,14 +89,28 @@
                   />
                 </td>
               </tr>
+            {:else}
+              <tr>
+                <td colspan="3"><center>(Nothing here)</center></td>
+              </tr>
             {/each}
           </tbody>
         </table>
       </div>
+      <p class="please-refresh">
+        Note: You need to refresh the tabs after changing something from here.
+      </p>
     </fieldset>
   </section>
 </div>
 
 <style>
   @import url('./table.css');
+  .identifier-cell {
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+  .please-refresh {
+    font-size: smaller;
+  }
 </style>
