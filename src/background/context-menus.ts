@@ -8,7 +8,6 @@ const targetUrlPatterns = [
   'https://*.facebook.com/*',
   'https://*.youtube.com/*',
   'https://*.medium.com/*',
-  'https://*.medium.com/*',
   'https://*.tumblr.com/*',
   'https://*.reddit.com/r/*',
   'https://*.reddit.com/user/*',
