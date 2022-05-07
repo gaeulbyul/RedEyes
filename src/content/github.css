@@ -1,0 +1,71 @@
+@charset "utf-8";
+
+/* NOTE:
+GitHub에선 유저네임에 .Link--primary 클래스네임이 있는데,
+color 속성에 !important가 걸려있어서 redeyes-style이 적용되지 않더라.
+따라서 명시도(specificity)를 더 높여주는 selector를 사용한다.
+*/
+
+/* repo 페이지: repo 이름 옆 유저 이름 */
+span.author a[data-redeyes='toxic'],
+span.author a.redeyes-toxic {
+  color: var(--redeyes-var-toxic) !important;
+}
+
+span.author a[data-redeyes='friendly'],
+span.author a.redeyes-friendly {
+  color: var(--redeyes-var-friendly) !important;
+}
+
+/* commit 작성자 이름 */
+a.commit-author[data-redeyes='toxic'],
+a.commit-author.redeyes-toxic {
+  color: var(--redeyes-var-toxic) !important;
+}
+
+a.commit-author[data-redeyes='friendly'],
+a.commit-author.redeyes-friendly {
+  color: var(--redeyes-var-friendly) !important;
+}
+
+/* 이슈트래커 이슈 작성자 이름. */
+a[data-hovercard-type='user'][data-redeyes='toxic'],
+a[data-hovercard-type='user'].redeyes-toxic {
+  color: var(--redeyes-var-toxic) !important;
+}
+
+a[data-hovercard-type='user'][data-redeyes='friendly'],
+a[data-hovercard-type='user'].redeyes-friendly {
+  color: var(--redeyes-var-friendly) !important;
+}
+
+/* hovercard */
+.Popover a[data-octo-dimensions='link_type:profile'][data-redeyes='toxic'],
+.Popover a[data-octo-dimensions='link_type:profile'].redeyes-toxic {
+  color: var(--redeyes-var-toxic) !important;
+}
+
+.Popover a[data-octo-dimensions='link_type:profile'][data-redeyes='friendly'],
+.Popover a[data-octo-dimensions='link_type:profile'].redeyes-friendly {
+  color: var(--redeyes-var-friendly) !important;
+}
+
+/* TODO:
+이슈트래커 목록상에서는 generic 스크립트 갖고는 identifier 검출이 안 됨.
+(이슈 작성자 대신 레포 주인의 색깔을 따라가는 문제가 있음..)
+임시로 색상적용을 해제함
+*/
+span.opened-by a.Link--muted {
+  color: var(--color-fg-muted) !important;
+}
+
+/* 외부링크 */
+a[href^='http'][data-redeyes='toxic'],
+a[href^='http'].redeyes-toxic {
+  color: var(--redeyes-var-toxic) !important;
+}
+
+a[href^='http'][data-redeyes='friendly'],
+a[href^='http'].redeyes-friendly {
+  color: var(--redeyes-var-friendly) !important;
+}

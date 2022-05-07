@@ -1,7 +1,6 @@
-const DBG_tooltip = false
+const DBG_tooltip = true
 
 const REDEYES_ATTR_NAME = 'data-redeyes'
-
 const elemToIdentifierMap = new WeakMap<Element, string>()
 
 function paintColorToElement(elem: HTMLElement, group: RedEyesFilterGroup) {

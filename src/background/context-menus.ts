@@ -13,6 +13,7 @@ const targetUrlPatterns = [
   'https://*.reddit.com/user/*',
   'https://*.wikipedia.org/wiki/*',
   'https://rationalwiki.org/wiki/*',
+  'https://github.com/*',
 ]
 
 async function manuallyIdentify(identifier: string, group: RedEyesFilterGroup) {

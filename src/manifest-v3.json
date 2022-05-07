@@ -32,8 +32,17 @@
       "js": ["bundled/site_twitter.bun.js"]
     },
     {
+      "matches": ["*://github.com/*"],
+      "css": ["content/github.css"],
+      "js": ["bundled/site_generic.bun.js"]
+    },
+    {
       "matches": ["*://*/*"],
-      "exclude_matches": ["https://twitter.com/*", "https://mobile.twitter.com/*"],
+      "exclude_matches": [
+        "https://twitter.com/*",
+        "https://mobile.twitter.com/*",
+        "*://github.com/*"
+      ],
       "css": ["content/redeyes-style.css"],
       "js": ["bundled/site_generic.bun.js"]
     }
