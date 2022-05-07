@@ -2,7 +2,10 @@ const DBG_tooltip = false
 
 const REDEYES_ATTR_NAME = 'data-redeyes'
 
+const elemToIdentifierMap = new WeakMap<Element, string>()
+
 function paintColorToElement(elem: HTMLElement, group: RedEyesFilterGroup) {
+  removeIndicate(elem)
   const className = groupToClassName(group)
   elem.classList.add(className)
   elem.setAttribute(REDEYES_ATTR_NAME, group)
@@ -24,10 +27,6 @@ function groupToClassName(group: RedEyesFilterGroup): string {
   }
 }
 
-function setIdentifierAttribute(elem: HTMLElement, identifier: string) {
-  elem.setAttribute('data-redeyes-identifier', identifier)
-}
-
 function generateTooltip(identifier: string, filter: MatchedFilter): string {
   let tooltip = '[RedEyes]:\n'
   tooltip += `identifier: "${identifier}"\n`
@@ -40,7 +39,18 @@ export function indicateElement(elem: HTMLElement, identifier: string, filters: 
   if (!document.body.contains(elem)) {
     return
   }
-  setIdentifierAttribute(elem, identifier)
+  elemToIdentifierMap.set(elem, identifier)
+  document.addEventListener('REDEYES repaint', event => {
+    const customEvent = event as CustomEvent
+    const { identifier, group } = customEvent.detail
+    if (!document.contains(elem)) {
+      return
+    }
+    if (identifier != elemToIdentifierMap.get(elem)) {
+      return
+    }
+    paintColorToElement(elem, group)
+  })
   if (filters.length <= 0) {
     return
   }
@@ -53,10 +63,14 @@ export function indicateElement(elem: HTMLElement, identifier: string, filters: 
 }
 
 export function repaintIdentifier(identifier: string, group: RedEyesFilterGroup) {
-  const elems = document.querySelectorAll<HTMLElement>(`[data-redeyes-identifier="${identifier}"]`)
-  elems.forEach(elem => {
-    paintColorToElement(elem, group)
-  })
+  document.dispatchEvent(
+    new CustomEvent('REDEYES repaint', {
+      detail: {
+        identifier,
+        group,
+      },
+    }),
+  )
 }
 
 function removeAttributeAndClassNames(elem: HTMLElement) {
