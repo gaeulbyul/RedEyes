@@ -57,11 +57,13 @@ export async function identify(identifier: string): Promise<MatchedFilter[]> {
   const miEntries = await preparedManuallyIdentifiedEntries
   if (identifier in miEntries) {
     const group = miEntries[identifier]
-    return [{
-      id: 'CUSTOM',
-      name: 'CUSTOM',
-      group,
-    }]
+    return [
+      {
+        id: 'CUSTOM',
+        name: 'CUSTOM',
+        group,
+      },
+    ]
   }
   const matched: MatchedFilter[] = []
   const bloomFilters = await preparedBloomFilters
@@ -79,10 +81,10 @@ export async function identify(identifier: string): Promise<MatchedFilter[]> {
 }
 
 browser.storage.onChanged.addListener(changes => {
-  const filtersInChanges = ('filters' in changes || 'filterDatas' in changes)
+  const filtersInChanges = 'filters' in changes || 'filterDatas' in changes
   if (filtersInChanges) {
-    const filters = (changes.filters.newValue || [])
-    const filterDatas = (changes.filterDatas.newValue || {})
+    const filters = changes.filters.newValue || []
+    const filterDatas = changes.filterDatas.newValue || {}
     const reprepared = refreshFilters(filters, filterDatas)
     preparedBloomFilters = Promise.resolve(reprepared)
   }

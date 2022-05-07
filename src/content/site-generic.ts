@@ -41,8 +41,7 @@ function main() {
   const selector = 'a[href]:not([href^="#"])'
   const touched = new WeakSet()
   const observer = initIntersectionObserver(handleLink)
-  Array
-    .from(document.querySelectorAll<HTMLAnchorElement>(selector))
+  Array.from(document.querySelectorAll<HTMLAnchorElement>(selector))
     .filter(link => !touched.has(link))
     .forEach(link => {
       touched.add(link)
@@ -73,11 +72,14 @@ function main() {
   })
 }
 
-loadLocalStorageOnly('excludedSites').then(({ excludedSites }) => {
-  const { hostname } = location
-  if (excludedSites.includes(hostname)) {
-    console.info('[RedEyes] this website (%s) is in the excluded sites.', hostname)
-    return
-  }
-  main()
-}, () => main())
+loadLocalStorageOnly('excludedSites').then(
+  ({ excludedSites }) => {
+    const { hostname } = location
+    if (excludedSites.includes(hostname)) {
+      console.info('[RedEyes] this website (%s) is in the excluded sites.', hostname)
+      return
+    }
+    main()
+  },
+  () => main()
+)

@@ -244,10 +244,13 @@ function main() {
   })
 }
 
-loadLocalStorageOnly('excludedSites').then(({ excludedSites }) => {
-  const { hostname } = location
-  if (excludedSites.includes(hostname)) {
-    return
-  }
-  main()
-}, () => main())
+loadLocalStorageOnly('excludedSites').then(
+  ({ excludedSites }) => {
+    const { hostname } = location
+    if (excludedSites.includes(hostname)) {
+      return
+    }
+    main()
+  },
+  () => main()
+)

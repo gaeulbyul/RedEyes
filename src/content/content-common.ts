@@ -10,7 +10,7 @@ export function* getAddedElementsFromMutations(mutations: MutationRecord[]) {
 
 export function collectElementsBySelector<T extends HTMLElement = HTMLElement>(
   rootElem: HTMLElement,
-  selector: string,
+  selector: string
 ): T[] {
   const result: T[] = []
   if (rootElem.matches(selector)) {

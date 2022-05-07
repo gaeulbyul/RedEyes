@@ -57,6 +57,4 @@ declare namespace REMessageToContent {
   }
 }
 
-type RedEyesMessageToContent =
-  | REMessageToContent.Alert
-  | REMessageToContent.RepaintIdentifier
+type RedEyesMessageToContent = REMessageToContent.Alert | REMessageToContent.RepaintIdentifier

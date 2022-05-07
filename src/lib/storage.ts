@@ -7,10 +7,7 @@ export const defaultStorage = Object.freeze<RedEyesStorage>({
   filterDatas: Object.create(null),
   manuallyIdentified: Object.create(null),
   colors: Object.assign(Object.create(null), colorPresets['preset 01']),
-  excludedSites: [
-    'vscode.dev',
-    'github.dev',
-  ],
+  excludedSites: ['vscode.dev', 'github.dev'],
 })
 
 type RedEyesStorageOnly = {
@@ -23,9 +20,9 @@ export async function loadLocalStorage(): Promise<RedEyesStorage> {
 }
 
 export async function loadLocalStorageOnly(
-  key: keyof RedEyesStorage | Array<keyof RedEyesStorage>,
+  key: keyof RedEyesStorage | Array<keyof RedEyesStorage>
 ): Promise<RedEyesStorageOnly> {
-  const storage = await browser.storage.local.get(key) as any
+  const storage = (await browser.storage.local.get(key)) as any
   const keys = Array.isArray(key) ? key : [key]
   keys.forEach(k => {
     storage[k] ??= defaultStorage[k]

@@ -18,8 +18,7 @@ option('mode', {
   default: 'production',
 })
 
-task('pre-commit', async () => {
-})
+task('pre-commit', async () => {})
 
 task('build', async () => {
   const mode = /^dev.+?/i.test(argv().mode) ? 'development' : 'production'
@@ -48,10 +47,7 @@ task('build', async () => {
 })
 
 task('clean', async () => {
-  await Promise.all([
-    rmrf('build-mv2/'),
-    rmrf('build-mv3/'),
-  ])
+  await Promise.all([rmrf('build-mv2/'), rmrf('build-mv3/')])
 })
 
 task('zip', async () => {

@@ -69,7 +69,7 @@ export function repaintIdentifier(identifier: string, group: RedEyesFilterGroup)
         identifier,
         group,
       },
-    }),
+    })
   )
 }
 
@@ -91,6 +91,5 @@ export function removeIndicate(elem: HTMLElement) {
     .redeyes-toxic,
     .redeyes-neutral
   `
-  elem.querySelectorAll<HTMLElement>(selector)
-    .forEach(removeAttributeAndClassNames)
+  elem.querySelectorAll<HTMLElement>(selector).forEach(removeAttributeAndClassNames)
 }
