@@ -17,7 +17,7 @@
   "host_permissions": ["*://*/*"],
 
   "background": {
-    "service_worker": "bundled/background.bun.js"
+    "service_worker": "service-worker-loader.js"
   },
 
   "options_ui": {
