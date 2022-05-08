@@ -1,70 +1,27 @@
 @charset "utf-8";
 
-/* NOTE:
-GitHub에선 유저네임에 .Link--primary 클래스네임이 있는데,
-color 속성에 !important가 걸려있어서 redeyes-style이 적용되지 않더라.
-따라서 명시도(specificity)를 더 높여주는 selector를 사용한다.
-*/
-
 /* repo 페이지: repo 이름 옆 유저 이름 */
-span.author a[data-redeyes='toxic'] {
-  color: var(--redeyes-var-toxic) !important;
-}
-
-span.author a[data-redeyes='friendly'] {
-  color: var(--redeyes-var-friendly) !important;
-}
-
+span.author a[data-redeyes='toxic'],
 /* commit 작성자 이름 */
-a.commit-author[data-redeyes='toxic'] {
-  color: var(--redeyes-var-toxic) !important;
-}
-
-a.commit-author[data-redeyes='friendly'] {
-  color: var(--redeyes-var-friendly) !important;
-}
-
+a.commit-author[data-redeyes='toxic'],
 /* 이슈트래커 이슈 작성자 이름. */
-a[data-hovercard-type='user'][data-redeyes='toxic'] {
-  color: var(--redeyes-var-toxic) !important;
-}
-
-a[data-hovercard-type='user'][data-redeyes='friendly'] {
-  color: var(--redeyes-var-friendly) !important;
-}
-
+a[data-hovercard-type='user'][data-redeyes='toxic'],
 /* hovercard */
-.Popover a[data-octo-dimensions='link_type:profile'][data-redeyes='toxic'] {
-  color: var(--redeyes-var-toxic) !important;
-}
-
-.Popover a[data-octo-dimensions='link_type:profile'][data-redeyes='friendly'] {
-  color: var(--redeyes-var-friendly) !important;
-}
-
+.Popover a[data-octo-dimensions='link_type:profile'][data-redeyes='toxic'],
 /* 프로필 */
-
-span.p-nickname.vcard-username[data-redeyes='toxic'] {
-  color: var(--redeyes-var-toxic) !important;
-}
-
-span.p-nickname.vcard-username[data-redeyes='friendly'] {
-  color: var(--redeyes-var-friendly) !important;
-}
-
-.user-profile-mini-vcard > span > strong[data-redeyes='toxic'] {
-  color: var(--redeyes-var-toxic) !important;
-}
-
-.user-profile-mini-vcard > span > strong[data-redeyes='friendly'] {
-  color: var(--redeyes-var-friendly) !important;
-}
-
+span.p-nickname.vcard-username[data-redeyes='toxic'],
+.user-profile-mini-vcard > span > strong[data-redeyes='toxic'],
 /* 기타 링크 */
 a[data-redeyes='toxic'] {
   color: var(--redeyes-var-toxic) !important;
 }
 
+span.author a[data-redeyes='friendly'],
+a.commit-author[data-redeyes='friendly'],
+a[data-hovercard-type='user'][data-redeyes='friendly'],
+.Popover a[data-octo-dimensions='link_type:profile'][data-redeyes='friendly'],
+span.p-nickname.vcard-username[data-redeyes='friendly'],
+.user-profile-mini-vcard > span > strong[data-redeyes='friendly'],
 a[data-redeyes='friendly'] {
   color: var(--redeyes-var-friendly) !important;
 }
