@@ -9,6 +9,9 @@ export function getIdentifier(url: string | URLLike): string | null {
     const realURL = getRealURLFromYoutubeRedirect(url)
     return getIdentifier(realURL)
   }
+  if (url.protocol === 'mailto:') {
+    return getHostnameFromMailtoLink(url)
+  }
   switch (true) {
     case hostname == 'wikipedia.org':
     case hostname.endsWith('.wikipedia.org'):
@@ -38,6 +41,11 @@ export function getIdentifier(url: string | URLLike): string | null {
       return hostname
   }
   return null
+}
+
+function getHostnameFromMailtoLink(url: URLLike) {
+  const splitted = url.toString().split('@')
+  return splitted[splitted.length - 1]
 }
 
 export function getHostname(url: URLLike) {
