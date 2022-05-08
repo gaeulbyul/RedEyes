@@ -15,16 +15,6 @@ const cachedMatchResultsMap = new Map<string, MatchedFilter[]>()
 
 const host = getHostname(location)
 
-// UI상 색칠하면 못 생겨지는 건 여기서 걸러내자.
-function shouldIndicate(elem: HTMLAnchorElement) {
-  if (elem.hostname == 'github.com') {
-    if (elem.search.startsWith('?tab=')) {
-      return false
-    }
-  }
-  return true
-}
-
 async function handleLink(elem: HTMLAnchorElement) {
   const identifier = getIdentifier(elem)
   if (!identifier) {
@@ -53,7 +43,6 @@ function main() {
   const observer = initIntersectionObserver(handleLink)
   Array.from(document.querySelectorAll<HTMLAnchorElement>(selector))
     .filter(link => !touched.has(link))
-    .filter(shouldIndicate)
     .forEach(link => {
       touched.add(link)
       observer.observe(link)

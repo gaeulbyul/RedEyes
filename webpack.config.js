@@ -13,6 +13,7 @@ const mv2 = {
     options_ui: './src/options-ui/options-ui.ts',
     site_twitter: './src/content/site-twitter.ts',
     site_generic: './src/content/site-generic.ts',
+    site_github: './src/content/site-github.ts',
   },
   output: {
     path: `${__dirname}/build-mv2/bundled`,

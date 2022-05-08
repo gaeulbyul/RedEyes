@@ -32,7 +32,7 @@
     {
       "matches": ["*://github.com/*"],
       "css": ["content/github.css"],
-      "js": ["bundled/site_generic.bun.js"]
+      "js": ["bundled/site_github.bun.js"]
     },
     {
       "matches": ["*://*/*"],

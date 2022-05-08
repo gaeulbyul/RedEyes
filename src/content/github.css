@@ -50,22 +50,35 @@ a[data-hovercard-type='user'].redeyes-friendly {
   color: var(--redeyes-var-friendly) !important;
 }
 
-/* TODO:
-이슈트래커 목록상에서는 generic 스크립트 갖고는 identifier 검출이 안 됨.
-(이슈 작성자 대신 레포 주인의 색깔을 따라가는 문제가 있음..)
-임시로 색상적용을 해제함
-*/
-span.opened-by a.Link--muted {
-  color: var(--color-fg-muted) !important;
-}
+/* 프로필 */
 
-/* 외부링크 */
-a[href^='http'][data-redeyes='toxic'],
-a[href^='http'].redeyes-toxic {
+span.p-nickname.vcard-username[data-redeyes='toxic'],
+span.p-nickname.vcard-username.redeyes-toxic {
   color: var(--redeyes-var-toxic) !important;
 }
 
-a[href^='http'][data-redeyes='friendly'],
-a[href^='http'].redeyes-friendly {
+span.p-nickname.vcard-username[data-redeyes='friendly'],
+span.p-nickname.vcard-username.redeyes-friendly {
+  color: var(--redeyes-var-friendly) !important;
+}
+
+.user-profile-mini-vcard > span > strong[data-redeyes='toxic'],
+.user-profile-mini-vcard > span > strong.redeyes-toxic {
+  color: var(--redeyes-var-toxic) !important;
+}
+
+.user-profile-mini-vcard > span > strong[data-redeyes='friendly'],
+.user-profile-mini-vcard > span > strong.redeyes-friendly {
+  color: var(--redeyes-var-friendly) !important;
+}
+
+/* 기타 링크 */
+a[data-redeyes='toxic'],
+a.redeyes-toxic {
+  color: var(--redeyes-var-toxic) !important;
+}
+
+a[data-redeyes='friendly'],
+a.redeyes-friendly {
   color: var(--redeyes-var-friendly) !important;
 }
