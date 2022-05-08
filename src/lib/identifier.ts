@@ -32,6 +32,8 @@ export function getIdentifier(url: string | URLLike): string | null {
       return youtubeIdentifier(url)
     case hostname == 'github.com':
       return githubIdentifier(url)
+    case hostname.endsWith('.github.io'):
+      return githubIdentifier(url)
     default:
       return hostname
   }
@@ -155,10 +157,20 @@ function youtubeIdentifier(url: URLLike): string | null {
 }
 
 function githubIdentifier(url: URLLike): string | null {
-  const firstToken = url.pathname.split('/')[1]!
-  if (!firstToken) {
-    return null
+  if (url.hostname === 'github.com') {
+    const firstToken = url.pathname.split('/')[1]!
+    if (!firstToken) {
+      return null
+    }
+    const loweredToken = firstToken.toLowerCase()
+    return `github.com/${loweredToken}`
+  } else {
+    // *.github.io
+    const match = /([0-9A-Za-z_-]+)\.github\.io$/i.exec(url.hostname)
+    if (!match) {
+      return null
+    }
+    const loweredToken = match[1].toLowerCase()
+    return `github.com/${loweredToken}`
   }
-  const loweredToken = firstToken.toLowerCase()
-  return `github.com/${loweredToken}`
 }
