@@ -5,25 +5,11 @@ const elemToIdentifierMap = new WeakMap<Element, string>()
 
 function paintColorToElement(elem: HTMLElement, group: RedEyesFilterGroup) {
   removeIndicate(elem)
-  const className = groupToClassName(group)
-  elem.classList.add(className)
   elem.setAttribute(REDEYES_ATTR_NAME, group)
   const spans = elem.querySelectorAll('span')
   spans.forEach(span => {
-    span.classList.add(className)
     span.setAttribute(REDEYES_ATTR_NAME, group)
   })
-}
-
-function groupToClassName(group: RedEyesFilterGroup): string {
-  switch (group) {
-    case 'friendly':
-      return 'redeyes-friendly'
-    case 'toxic':
-      return 'redeyes-toxic'
-    case 'neutral':
-      return 'redeyes-neutral'
-  }
 }
 
 function generateTooltip(identifier: string, filter: MatchedFilter): string {
@@ -72,23 +58,15 @@ export function repaintIdentifier(identifier: string, group: RedEyesFilterGroup)
   )
 }
 
-function removeAttributeAndClassNames(elem: HTMLElement) {
+function removeRedEyesAttribute(elem: HTMLElement) {
   elem.removeAttribute(REDEYES_ATTR_NAME)
-  elem.classList.remove('redeyes-friendly')
-  elem.classList.remove('redeyes-toxic')
-  elem.classList.remove('redeyes-neutral')
 }
 
 export function removeIndicate(elem: HTMLElement) {
   if (!document.body.contains(elem)) {
     return
   }
-  removeAttributeAndClassNames(elem)
-  const selector = `
-    [${REDEYES_ATTR_NAME}],
-    .redeyes-friendly,
-    .redeyes-toxic,
-    .redeyes-neutral
-  `
-  elem.querySelectorAll<HTMLElement>(selector).forEach(removeAttributeAndClassNames)
+  removeRedEyesAttribute(elem)
+  const selector = `[${REDEYES_ATTR_NAME}]`
+  elem.querySelectorAll<HTMLElement>(selector).forEach(removeRedEyesAttribute)
 }

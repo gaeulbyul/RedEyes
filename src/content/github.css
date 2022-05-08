@@ -7,78 +7,64 @@ color 속성에 !important가 걸려있어서 redeyes-style이 적용되지 않�
 */
 
 /* repo 페이지: repo 이름 옆 유저 이름 */
-span.author a[data-redeyes='toxic'],
-span.author a.redeyes-toxic {
+span.author a[data-redeyes='toxic'] {
   color: var(--redeyes-var-toxic) !important;
 }
 
-span.author a[data-redeyes='friendly'],
-span.author a.redeyes-friendly {
+span.author a[data-redeyes='friendly'] {
   color: var(--redeyes-var-friendly) !important;
 }
 
 /* commit 작성자 이름 */
-a.commit-author[data-redeyes='toxic'],
-a.commit-author.redeyes-toxic {
+a.commit-author[data-redeyes='toxic'] {
   color: var(--redeyes-var-toxic) !important;
 }
 
-a.commit-author[data-redeyes='friendly'],
-a.commit-author.redeyes-friendly {
+a.commit-author[data-redeyes='friendly'] {
   color: var(--redeyes-var-friendly) !important;
 }
 
 /* 이슈트래커 이슈 작성자 이름. */
-a[data-hovercard-type='user'][data-redeyes='toxic'],
-a[data-hovercard-type='user'].redeyes-toxic {
+a[data-hovercard-type='user'][data-redeyes='toxic'] {
   color: var(--redeyes-var-toxic) !important;
 }
 
-a[data-hovercard-type='user'][data-redeyes='friendly'],
-a[data-hovercard-type='user'].redeyes-friendly {
+a[data-hovercard-type='user'][data-redeyes='friendly'] {
   color: var(--redeyes-var-friendly) !important;
 }
 
 /* hovercard */
-.Popover a[data-octo-dimensions='link_type:profile'][data-redeyes='toxic'],
-.Popover a[data-octo-dimensions='link_type:profile'].redeyes-toxic {
+.Popover a[data-octo-dimensions='link_type:profile'][data-redeyes='toxic'] {
   color: var(--redeyes-var-toxic) !important;
 }
 
-.Popover a[data-octo-dimensions='link_type:profile'][data-redeyes='friendly'],
-.Popover a[data-octo-dimensions='link_type:profile'].redeyes-friendly {
+.Popover a[data-octo-dimensions='link_type:profile'][data-redeyes='friendly'] {
   color: var(--redeyes-var-friendly) !important;
 }
 
 /* 프로필 */
 
-span.p-nickname.vcard-username[data-redeyes='toxic'],
-span.p-nickname.vcard-username.redeyes-toxic {
+span.p-nickname.vcard-username[data-redeyes='toxic'] {
   color: var(--redeyes-var-toxic) !important;
 }
 
-span.p-nickname.vcard-username[data-redeyes='friendly'],
-span.p-nickname.vcard-username.redeyes-friendly {
+span.p-nickname.vcard-username[data-redeyes='friendly'] {
   color: var(--redeyes-var-friendly) !important;
 }
 
-.user-profile-mini-vcard > span > strong[data-redeyes='toxic'],
-.user-profile-mini-vcard > span > strong.redeyes-toxic {
+.user-profile-mini-vcard > span > strong[data-redeyes='toxic'] {
   color: var(--redeyes-var-toxic) !important;
 }
 
-.user-profile-mini-vcard > span > strong[data-redeyes='friendly'],
-.user-profile-mini-vcard > span > strong.redeyes-friendly {
+.user-profile-mini-vcard > span > strong[data-redeyes='friendly'] {
   color: var(--redeyes-var-friendly) !important;
 }
 
 /* 기타 링크 */
-a[data-redeyes='toxic'],
-a.redeyes-toxic {
+a[data-redeyes='toxic'] {
   color: var(--redeyes-var-toxic) !important;
 }
 
-a[data-redeyes='friendly'],
-a.redeyes-friendly {
+a[data-redeyes='friendly'] {
   color: var(--redeyes-var-friendly) !important;
 }
