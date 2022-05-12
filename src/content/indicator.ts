@@ -1,9 +1,7 @@
-const DBG_tooltip = true
-
 const REDEYES_ATTR_NAME = 'data-redeyes'
 const elemToIdentifierMap = new WeakMap<Element, string>()
 
-function paintColorToElement(elem: HTMLElement, group: RedEyesFilterGroup) {
+function paintColorToElement(elem: HTMLElement, group: RedEyesFilterGroup | 'conflict') {
   removeIndicate(elem)
   elem.setAttribute(REDEYES_ATTR_NAME, group)
   const spans = elem.querySelectorAll('span')
@@ -12,15 +10,37 @@ function paintColorToElement(elem: HTMLElement, group: RedEyesFilterGroup) {
   })
 }
 
-function generateTooltip(identifier: string, filter: MatchedFilter): string {
-  let tooltip = '[RedEyes]:\n'
-  tooltip += `identifier: "${identifier}"\n`
-  tooltip += `name: "${filter.name}"\n`
-  tooltip += `group: "${filter.group}"\n`
-  return tooltip
+function generateTooltip(identifier: string, matchResult: MatchResult): string {
+  if (matchResult.isManuallyIdentified) {
+    return `[RedEyes] You identified "${identifier}" as ${matchResult.type}.`
+  }
+  if (matchResult.type === 'neutral') {
+    return ''
+  }
+  if (matchResult.type === 'conflict') {
+    const { filters } = matchResult
+    const filterNamesThatIdentifiedAsToxic = filters
+      .filter(f => f.group === 'toxic')
+      .map(f => f.name)
+      .join()
+    const filterNamesThatIdentifiedAsFriendly = filters
+      .filter(f => f.group === 'friendly')
+      .map(f => f.name)
+      .join()
+    return [
+      `[RedEyes] Tried to identify "${identifier}" but conflicted...`,
+      `This filter(s) identified it as Toxic: ${filterNamesThatIdentifiedAsToxic}`,
+      `... but This filter(s) identified it as Friendly: ${filterNamesThatIdentifiedAsFriendly}`,
+    ].join('\n')
+  }
+  const matchedFilterNames = matchResult.filters.map(f => f.name).join()
+  return [
+    `[RedEyes] Identified "${identifier}" as ${matchResult.type}!`,
+    `Matched filters: ${matchedFilterNames}`,
+  ].join('\n')
 }
 
-export function indicateElement(elem: HTMLElement, identifier: string, filters: MatchedFilter[]) {
+export function indicateElement(elem: HTMLElement, identifier: string, matchResult: MatchResult) {
   if (!document.body.contains(elem)) {
     return
   }
@@ -36,15 +56,16 @@ export function indicateElement(elem: HTMLElement, identifier: string, filters: 
     }
     paintColorToElement(elem, group)
   })
-  if (filters.length <= 0) {
-    return
+  const tooltip = generateTooltip(identifier, matchResult)
+  if (tooltip) {
+    if (elem.title) {
+      elem.title += '\n-----\n'
+      elem.title += tooltip
+    } else {
+      elem.title = tooltip
+    }
   }
-  const firstFilter = filters[0]!
-  if (DBG_tooltip) {
-    const tooltip = generateTooltip(identifier, firstFilter)
-    elem.title = tooltip
-  }
-  paintColorToElement(elem, firstFilter.group)
+  paintColorToElement(elem, matchResult.type)
 }
 
 export function repaintIdentifier(identifier: string, group: RedEyesFilterGroup) {

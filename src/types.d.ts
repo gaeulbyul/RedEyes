@@ -1,4 +1,3 @@
-// TODO: rename as harmful/friendly
 type RedEyesFilterGroup = 'toxic' | 'friendly' | 'neutral'
 
 interface RedEyesFilter {
@@ -32,6 +31,12 @@ type RedEyesStorageChanges = {
     oldValue: RedEyesStorage[key]
     newValue: RedEyesStorage[key]
   }
+}
+
+interface MatchResult {
+  type: RedEyesFilterGroup | 'conflict'
+  isManuallyIdentified: boolean
+  filters: MatchedFilter[]
 }
 
 interface MatchedFilter {

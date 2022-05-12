@@ -11,7 +11,7 @@ import {
 import { listenExtensionMessage } from './content-extension-message-handler'
 import { indicateElement } from './indicator'
 
-const cachedMatchResultsMap = new Map<string, MatchedFilter[]>()
+const cachedMatchResultsMap = new Map<string, MatchResult>()
 
 const host = getHostname(location)
 
@@ -28,9 +28,9 @@ async function handleLink(elem: HTMLAnchorElement) {
   if (cachedResults) {
     indicateElement(elem, identifier, cachedResults)
   } else {
-    Filtering.identify(identifier).then(results => {
-      cachedMatchResultsMap.set(identifier, results)
-      indicateElement(elem, identifier, results)
+    Filtering.identify(identifier).then(matchResult => {
+      cachedMatchResultsMap.set(identifier, matchResult)
+      indicateElement(elem, identifier, matchResult)
     })
   }
 }

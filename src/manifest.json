@@ -31,7 +31,7 @@
     },
     {
       "matches": ["*://github.com/*"],
-      "css": ["content/github.css"],
+      "css": ["content/redeyes-style.css", "content/github.css"],
       "js": ["bundled/site_github.bun.js"]
     },
     {

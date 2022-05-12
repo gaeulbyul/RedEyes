@@ -58,8 +58,8 @@ async function handleUserLink(elem: HTMLAnchorElement) {
   if (!identifier) {
     return
   }
-  Filtering.identify(identifier).then(results => {
-    indicateElement(elem, identifier!, results)
+  Filtering.identify(identifier).then(matchResult => {
+    indicateElement(elem, identifier, matchResult)
   })
 }
 
@@ -73,8 +73,8 @@ async function handleHovercardUserLink(elem: HTMLAnchorElement) {
   if (!identifier) {
     return
   }
-  Filtering.identify(identifier).then(results => {
-    indicateElement(elem, identifier, results)
+  Filtering.identify(identifier).then(matchResult => {
+    indicateElement(elem, identifier, matchResult)
   })
 }
 
@@ -85,8 +85,8 @@ async function handleHovercardRepoLink(elem: HTMLAnchorElement) {
   if (!identifier) {
     return
   }
-  Filtering.identify(identifier).then(results => {
-    indicateElement(elem, identifier, results)
+  Filtering.identify(identifier).then(matchResult => {
+    indicateElement(elem, identifier, matchResult)
   })
 }
 
@@ -99,8 +99,8 @@ async function handleNotLinkedUserName(elem: HTMLElement) {
   if (!identifier) {
     return
   }
-  Filtering.identify(identifier).then(results => {
-    indicateElement(elem, identifier, results)
+  Filtering.identify(identifier).then(matchResult => {
+    indicateElement(elem, identifier, matchResult)
   })
 }
 
@@ -112,8 +112,8 @@ async function handleExternalLink(elem: HTMLAnchorElement) {
   if (!identifier) {
     return
   }
-  Filtering.identify(identifier).then(results => {
-    indicateElement(elem, identifier, results)
+  Filtering.identify(identifier).then(matchResult => {
+    indicateElement(elem, identifier, matchResult)
   })
 }
 

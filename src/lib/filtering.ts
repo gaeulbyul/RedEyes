@@ -53,31 +53,61 @@ function refreshManuallyIdentifiedEntries(manuallyIdentified: RedEyesManuallyIde
   return result
 }
 
-export async function identify(identifier: string): Promise<MatchedFilter[]> {
+export async function identify(identifier: string): Promise<MatchResult> {
   const miEntries = await preparedManuallyIdentifiedEntries
   if (identifier in miEntries) {
     const group = miEntries[identifier]
-    return [
-      {
-        id: 'CUSTOM',
-        name: 'CUSTOM',
-        group,
-      },
-    ]
+    return {
+      type: group,
+      isManuallyIdentified: true,
+      filters: [],
+    }
   }
   const matched: MatchedFilter[] = []
+  let toxic = false
+  let friendly = false
   const bloomFilters = await preparedBloomFilters
-  bloomFilters.forEach(mbf => {
+  for (const mbf of bloomFilters) {
     if (!mbf.bloomFilter.test(identifier)) {
-      return
+      continue
+    }
+    switch (mbf.group) {
+      case 'toxic':
+        toxic = true
+        break
+      case 'friendly':
+        friendly = true
+        break
     }
     matched.push({
       id: mbf.id,
       name: mbf.name,
       group: mbf.group,
     })
-  })
-  return matched
+  }
+  // 여러 필터가 설치되어있는데, 상반된 결과를 나타내면 conflict로 하자.
+  let matchType: MatchResult['type']
+  switch (true) {
+    case toxic && !friendly:
+      matchType = 'toxic'
+      break
+    case !toxic && friendly:
+      matchType = 'friendly'
+      break
+    case toxic && friendly:
+      matchType = 'conflict'
+      break
+    case !toxic && !friendly:
+      matchType = 'neutral'
+      break
+    default:
+      throw new Error('unreachable')
+  }
+  return {
+    type: matchType,
+    isManuallyIdentified: false,
+    filters: matched,
+  }
 }
 
 browser.storage.onChanged.addListener(changes => {

@@ -42,8 +42,8 @@ async function handleExternalLink(elem: HTMLAnchorElement) {
   if (!identifier) {
     return
   }
-  Filtering.identify(identifier).then(results => {
-    indicateElement(elem, identifier, results)
+  Filtering.identify(identifier).then(matchResult => {
+    indicateElement(elem, identifier, matchResult)
   })
 }
 
@@ -51,8 +51,8 @@ async function handleTypeaheadUserElem(elem: HTMLElement) {
   const userNameElem = elem.querySelector('[dir=ltr] > span')
   const userName = userNameElem!.textContent!.replace(/^@/, '')
   const identifier = `twitter.com/${userName.toLowerCase()}`
-  Filtering.identify(identifier).then(results => {
-    indicateElement(elem, identifier, results)
+  Filtering.identify(identifier).then(matchResult => {
+    indicateElement(elem, identifier, matchResult)
   })
 }
 
@@ -68,11 +68,11 @@ async function handleUserCellElem(elem: HTMLElement) {
     if (!identifier) {
       return
     }
-    Filtering.identify(identifier).then(results => {
-      indicateElement(ln, identifier, results)
-      if (results.length > 0) {
+    Filtering.identify(identifier).then(matchResult => {
+      indicateElement(ln, identifier, matchResult)
+      if (matchResult.filters.length > 0) {
         const isItself = ln.isSameNode(userLink)
-        const isHarmful = results[0].group === 'toxic'
+        const isHarmful = matchResult.type === 'toxic'
         if (isItself && isHarmful) {
           elem.children[0].classList.add('assigned-label-transphobic')
         }
@@ -99,17 +99,17 @@ async function handleTweetElem(elem: HTMLElement) {
     if (!identifier) {
       return
     }
-    Filtering.identify(identifier).then(results => {
-      indicateElement(ln, identifier, results)
-      if (results.length > 0) {
-        const isHarmful = results[0].group === 'toxic'
+    Filtering.identify(identifier).then(matchResult => {
+      indicateElement(ln, identifier, matchResult)
+      if (matchResult.filters.length > 0) {
+        const isHarmful = matchResult.type === 'toxic'
         if (isAuthor && isHarmful) {
           // article[data-testid=tweet] elem은 class가 바뀌면서
           // assigned-label-transphobic이 날라가더라.
           // 따라서 그 하위 요소 중에서 클래스네임을 부여한다.
           elem.children[0].classList.add('assigned-label-transphobic')
           // elem.classList.add('assigned-label-transphobic')
-          elem.setAttribute('data-redeyes-tweet', results[0].group)
+          elem.setAttribute('data-redeyes-tweet', matchResult.type)
         }
       }
     })
@@ -123,8 +123,8 @@ async function handleUserNameElem(elem: HTMLElement) {
   const actualUserNameElem = elem.querySelector('[dir=ltr] > span')!
   const userName = actualUserNameElem.textContent!.replace(/^@/, '')
   const identifier = 'twitter.com/' + userName.toLowerCase()
-  Filtering.identify(identifier).then(results => {
-    indicateElement(elem, identifier, results)
+  Filtering.identify(identifier).then(matchResult => {
+    indicateElement(elem, identifier, matchResult)
   })
 }
 
@@ -135,8 +135,8 @@ async function handleUserDescriptionElem(elem: HTMLElement) {
     if (!identifier) {
       return
     }
-    Filtering.identify(identifier).then(results => {
-      indicateElement(ln, identifier, results)
+    Filtering.identify(identifier).then(matchResult => {
+      indicateElement(ln, identifier, matchResult)
     })
   })
 }
@@ -152,8 +152,8 @@ async function handleHoverLayer(elem: HTMLElement) {
     if (!identifier) {
       return
     }
-    Filtering.identify(identifier).then(results => {
-      indicateElement(ln, identifier, results)
+    Filtering.identify(identifier).then(matchResult => {
+      indicateElement(ln, identifier, matchResult)
     })
   })
 }

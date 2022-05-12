@@ -7,3 +7,8 @@
 [data-redeyes='friendly'] {
   color: var(--redeyes-var-friendly) !important;
 }
+
+[data-redeyes='conflict'] {
+  text-decoration: orange underline dotted !important;
+  cursor: help;
+}
