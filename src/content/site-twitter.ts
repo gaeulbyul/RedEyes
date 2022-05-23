@@ -84,6 +84,49 @@ async function handleUserCellElem(elem: HTMLElement) {
   externalLinks.forEach(handleExternalLink)
 }
 
+// 트위터에서 직접적인 멘션을 피하고자 @ 뒤에 공백이나 특수문자를 넣는 경우가 있다.
+// 예를 들어, "@/example" , "@ example" 같은 식으로.
+// 이런 계정도 표시하자.
+async function handleTweetTextSpanElem(elem: HTMLElement) {
+  const pattern = /@\W(\w{1,15})/gi
+  const text = elem.textContent || ''
+  const matches = Array.from(text.matchAll(pattern))
+  const identifiers = matches.map(match => {
+    const username = match[1]
+    return 'twitter.com/' + username.toLowerCase()
+  })
+  const identifiedMatches = await Promise.all(
+    identifiers.map(identifier => Filtering.identify(identifier))
+  )
+  const newText = document.createElement('span')
+  elem.replaceWith(newText)
+  let previousLastIndex = 0
+  matches.forEach((match, i) => {
+    const index = match.index!
+    const lastIndex = index + match[0].length
+    const identifier = identifiers[i]
+    const identifyResult = identifiedMatches[i]
+    const prefix = text.slice(previousLastIndex, index)
+    newText.appendChild(document.createTextNode(prefix))
+    const unlinkedMentionElement = document.createElement('span')
+    // indicateElement 가 document.body.contains 체크를 하므로
+    // appendChild 를 먼저 해줘야 한다.
+    newText.appendChild(unlinkedMentionElement)
+    unlinkedMentionElement.textContent = text.slice(index, lastIndex)
+    indicateElement(unlinkedMentionElement, identifier, identifyResult)
+    previousLastIndex = lastIndex
+  })
+  const lastPostfix = text.slice(previousLastIndex)
+  if (lastPostfix) {
+    newText.appendChild(document.createTextNode(lastPostfix))
+  }
+}
+
+function handleTweetTextElem(elem: HTMLElement) {
+  const spans = Array.from(elem.children).filter(el => el.tagName == 'SPAN') as HTMLElement[]
+  spans.forEach(handleTweetTextSpanElem)
+}
+
 async function handleTweetElem(elem: HTMLElement) {
   const permalinkInTimeline = elem.querySelector('a[href*="/status/"] > time')?.parentElement
   const permalinkInTweetDetail = elem.querySelector('a[href*="/status/"] > span')?.parentElement
@@ -189,6 +232,8 @@ function handleElement(elem: HTMLElement) {
       return handleUserDescriptionElem(elem)
     case 'TypeaheadUser':
       return handleTypeaheadUserElem(elem)
+    case 'tweetText':
+      return handleTweetTextElem(elem)
     default:
       console.warn('unknown element: ', elem)
       throw new Error('unreachable')
@@ -216,6 +261,7 @@ const selectors = [
   'div[data-testid=UserName]',
   'div[data-testid=UserDescription]',
   'div[data-testid=TypeaheadUser]',
+  'div[data-testid=tweetText]',
 ].join(',')
 
 function main() {
